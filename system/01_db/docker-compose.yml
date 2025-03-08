@@ -1,0 +1,36 @@
+version: '3'
+services:
+
+  serifu-dev-mysql:
+    container_name: 'serifu.dev.db.mysql'
+    platform: linux/amd64
+    image: mysql:8.4
+    #ports:
+    #  - '13006:3306'
+    networks:
+      - serifu-dev-network
+    environment:
+      MYSQL_DATABASE: serifu-dev-db
+      MYSQL_USER: serifudev
+      MYSQL_PASSWORD: serifudev5pass
+      MYSQL_ROOT_PASSWORD: rootTwsDev3
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    volumes:
+      - ./db/data:/var/lib/mysql
+
+  serifu-dev-myadmin:
+    container_name: 'serifu.dev.myadmin'
+    depends_on:
+      - serifu-dev-mysql
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: serifu-dev-mysql
+    restart: always
+    ports:
+      - "12101:80"
+    networks:
+      - serifu-dev-network
+
+networks:
+  serifu-dev-network:
+    external: true

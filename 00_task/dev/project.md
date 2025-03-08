@@ -12,3 +12,5 @@ npm install tailwindcss @tailwindcss/vite
 # backend
 https://docs.nestjs.com/
 nest new 02_back
+
+start up projectをクローンして02_backendにコピー

@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  serifu-dev-web:
+    container_name: 'serifu.dev.web'
+    build:
+      context: .
+      dockerfile: dockerfiles/nginx.dockerfile
+    ports:
+      - '12102:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      serifu-dev-nodejs:
+        condition: service_started
+  serifu-dev-nodejs:
+    container_name: 'serifu.dev.nodejs'
+    build:
+      context: .
+      dockerfile: dockerfiles/nodejs.dockerfile
+    volumes:
+      - ./project:/app:delegated
+    #command: nodemon index.js
+    command: npm run start:dev
+    environment:
+      CHOKIDAR_USEPOLLING: 1
+
+networks:
+  serifu-dev-network:
+    external: true
