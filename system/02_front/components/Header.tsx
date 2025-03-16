@@ -1,4 +1,9 @@
+'use client';
+
 import * as React from 'react';
+
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+
 import Stack from '@mui/material/Stack';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import CustomDatePicker from './CustomDatePicker';
@@ -12,10 +17,15 @@ import ToggleColorMode from './ToggleColorMode';
 import ColorModeIconDropdown from './ColorModeIconDropdown';
 import { Box, BoxProps } from '@mui/material';
 import MainMenu from './MainMenu';
-import Account from './Account';
+import Login from './Login';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
+import Link from 'next/link'
 
 function Item(props: BoxProps) {
+
   const { sx, ...other } = props;
+
   return (
     <Box
       sx={[
@@ -44,6 +54,11 @@ function Item(props: BoxProps) {
 
 
 export default function Header() {
+
+  const pathname = usePathname();
+  console.log('pathname', pathname);
+
+
   return (
     // <Stack
     //   direction="row"
@@ -81,16 +96,20 @@ export default function Header() {
     }}
   >
     <Box sx={{ gridArea: 'mainManu', }}>
-      {/* <MainMenu /> */}
+      <MainMenu currentUrl={pathname} />
     </Box>
     {/* <Box sx={{ gridArea: 'subMenu', alignSelf: 'center', justifySelf: 'end' }}>
       <MenuButton showBadge aria-label="Open notifications">
         <NotificationsRoundedIcon />
       </MenuButton>
     </Box> */}
-    <Box sx={{ gridArea: 'subMenu', alignSelf: 'center', justifySelf: 'end', pr: 4 }}>
-      <OptionsMenu />
-      <Account />
+    <Box sx={{ minHeight: '40px', display: 'flex', gridArea: 'subMenu', alignSelf: 'center',alignItems: 'center', justifySelf: 'end', pr: 2 }}>
+      {/* <OptionsMenu />
+       */}
+       <Link href={`/login`} passHref >
+         <LoginRoundedIcon/>
+       </Link>
+      {/* <Login currentUrl={pathname} /> */}
     </Box>
   </Box>
 

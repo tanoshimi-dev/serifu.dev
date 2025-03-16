@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from 'axios';
 import type { RootState  } from '../store'
-import { MAccount } from '@/types/m_account';
-import { ApiArgsAccount, ApiArgsCustomerUpsert } from '@/types/api_args';
+import { User } from '@/lib/types/user';
+import { ApiArgsUserLogin, ApiArgsAccount, ApiArgsCustomerUpsert } from '@/lib/types/api_args';
 
 const url = process.env.NEXT_PUBLIC_API_URL??'';
 const suffix = process.env.NEXT_PUBLIC_API_URL_SUFFIX??'';
@@ -11,7 +11,7 @@ const apiUrl = url + suffix;
 const tokenKey = process.env.ACCESS_TOKEN??'';
 
 const initialState: AccountState = {
-  account: {} as MAccount,
+  user: {} as User,
   accessToken: null,
   fetchStatus: "",
   updateStatus: "",
@@ -22,9 +22,7 @@ const initialState: AccountState = {
 };
 
 
-export const login = createAsyncThunk("user/login", async (params: ApiArgsAccount) => {
-
-  //console.log('★API★ login url', params);
+export const login = createAsyncThunk("account/login", async (params: ApiArgsUserLogin) => {
 
   try {
     const sanctumResponse = await fetch(`${apiUrl}sanctum/csrf-cookie`, {
@@ -44,26 +42,32 @@ export const login = createAsyncThunk("user/login", async (params: ApiArgsAccoun
     if (xsrfToken) {
         xsrfToken = xsrfToken.split('=')[1]
     }
-    const userid = params.userid;
+    const email = params.email;
     const password = params.password;
 
-    const response = await fetch(`${apiUrl}api/login`, {
+    console.log('★API★ login url', `${apiUrl}login`, params);
+    //console.log('★API★ xsrfToken', xsrfToken);
+    
+    const response = await fetch(`${apiUrl}login`, {
       // fetch("https://rehop.jp/demo/trade_back/public/login", {
       method: 'POST',
-      cache: 'no-store',
       headers: {
-          'Content-Type': 'application/json',
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken ?? ''),
-          // 'X-XSRF-TOKEN': xsrfToken ?? '',
-          'Accept': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        //'X-Requested-With': 'XMLHttpRequest',
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken ?? ''),
       },
-      credentials: "include",
+      credentials: 'include',
       body: JSON.stringify({
-        userid:   userid,
+        email:   email,
         password: password
       }),
 
     });
+
+
+    console.log('★API★ login response', response);
+
 
     if (!response.ok) {
       return;
@@ -75,14 +79,14 @@ export const login = createAsyncThunk("user/login", async (params: ApiArgsAccoun
     return data;
 
   } catch (error) {
-    //console.error('★API★ login error', error);
-    //return error;
+    console.error('★API★ login error', error);
+    return error;
   }
 
 
 });
 
-export const logout = createAsyncThunk("user/logout", async () => {
+export const logout = createAsyncThunk("account/logout", async () => {
   //console.log('★API★ logout url', params);
 
   try {
@@ -107,7 +111,7 @@ export const logout = createAsyncThunk("user/logout", async () => {
         xsrfToken = xsrfToken.split('=')[1]
     }
 
-    const response = await fetch(`${apiUrl}api/logout`,{
+    const response = await fetch(`${apiUrl}logout`,{
       // fetch("https://rehop.jp/demo/trade_back/public/login", {
         method: 'POST',
         cache: 'no-store',
@@ -139,7 +143,7 @@ export const logout = createAsyncThunk("user/logout", async () => {
 });
 
 
-export const rememberMeLogin = createAsyncThunk("user/remember-me-login", async () => {
+export const rememberMeLogin = createAsyncThunk("account/remember-me-login", async () => {
 
   //console.log('★API★ login url', params);
 
@@ -191,7 +195,7 @@ export const rememberMeLogin = createAsyncThunk("user/remember-me-login", async 
 });
 
 
-export const getAuthUser = createAsyncThunk("user/authuser", async () => {
+export const getAuthUser = createAsyncThunk("account/authuser", async () => {
 
   try {
     const token = localStorage.getItem(tokenKey);
@@ -222,40 +226,17 @@ export const getAuthUser = createAsyncThunk("user/authuser", async () => {
 });
 
 
-export const getUser = createAsyncThunk("user/user", async () => {
+export const getUser = createAsyncThunk("account/user", async () => {
 
   try {
 
-    // const sanctumResponse = await fetch(`${apiUrl}sanctum/csrf-cookie`, {
-    //   method: 'GET',
-    //   credentials: 'include',
-    //   cache: 'no-store',
-    // });
-
-    // console.error('sunctum response', sanctumResponse);
-      
-    // if (!sanctumResponse.ok) {
-    //   return;
-    // }
-
-    //let xsrfToken = document.cookie.split('; ').find(row => row.startsWith("XSRF-TOKEN"));
     let xsrfToken = document.cookie.split('; ').find(row => row.startsWith(process.env.NEXT_PUBLIC_XSRF_TOKEN ?? ''));
 
     if (xsrfToken) {
         xsrfToken = xsrfToken.split('=')[1]
     }
 
-    //console.log('★API★ getUser xsrfToken', xsrfToken);
-
-    // const response = await fetch(`${apiUrl}api/get-user`, {
     const response = await fetch(`${apiUrl}api/user`, {
-        // method: 'POST',
-      // cache: 'no-store',
-      // headers: {
-      //     'Content-Type': 'application/json',
-      //     'X-XSRF-TOKEN': decodeURIComponent(xsrfToken ?? ''),
-      //     'Accept': 'application/json'
-      // },
 
       method: 'GET',
       headers: {
@@ -268,8 +249,6 @@ export const getUser = createAsyncThunk("user/user", async () => {
             
     });
 
-    // const response = axios.get(`${apiUrl}api/user`)
-
     if (!response.ok) {
       return;
     }
@@ -278,6 +257,7 @@ export const getUser = createAsyncThunk("user/user", async () => {
     return data;
 
   } catch (error) {
+    console.error('★API★ getUser error', error);
   }
 
 
@@ -285,7 +265,7 @@ export const getUser = createAsyncThunk("user/user", async () => {
 
 
 const accountSlice = createSlice({
-    name: 'authSlice',
+    name: 'accountSlice',
     initialState: initialState,
     reducers: {},
     extraReducers: (builder) => {
@@ -293,22 +273,22 @@ const accountSlice = createSlice({
       // login
       builder.addCase(login.pending, (state, action) => {
         state.fetchStatus = 'pending'
-        state.account = {} as MAccount
+        state.user = {} as User
         state.accessToken = null
       });
-      builder.addCase(login.fulfilled, (state, 
-        action: PayloadAction<{ message?: string, data?: MAccount, access_token?: string } | undefined>) => {
+      builder.addCase(login.fulfilled, (state, action) => {
+        //action: PayloadAction<{ message?: string, data?: User, access_token?: string } | undefined>) => {
         
         state.fetchStatus = 'success'
 
         if(action.payload && action.payload.data) {
-          state.account = action.payload.data
+          state.user = action.payload.data
         }
-        if(action.payload && action.payload.access_token) {
-          state.accessToken = action.payload.access_token
-          localStorage.setItem(tokenKey, action.payload.access_token); 
-          console.log('tokenKey', tokenKey, action.payload.access_token)
-        }
+        // if(action.payload && action.payload.access_token) {
+        //   state.accessToken = action.payload.access_token
+        //   localStorage.setItem(tokenKey, action.payload.access_token); 
+        //   console.log('tokenKey', tokenKey, action.payload.access_token)
+        // }
 
       });
       builder.addCase(login.rejected, (state, action) => {
@@ -319,14 +299,14 @@ const accountSlice = createSlice({
       // rememberMeLogin
       builder.addCase(rememberMeLogin.pending, (state, action) => {
         state.fetchStatus = 'pending'
-        state.account = {} as MAccount
+        state.user = {} as User
       });
       builder.addCase(rememberMeLogin.fulfilled, (state, action) => {
         state.fetchStatus = 'success'
         console.log('rememberMeLogin.fulfilled★ action.payload', action.payload)
 
         if(action.payload && action.payload.data) {
-          state.account = action.payload.data
+          state.user = action.payload.data
         }
       });
       builder.addCase(rememberMeLogin.rejected, (state, action) => {
@@ -336,7 +316,7 @@ const accountSlice = createSlice({
       // logout
       builder.addCase(logout.pending, (state, action) => {
         state.fetchStatus = 'pending'
-        state.account = {} as MAccount
+        state.user = {} as User
       });
       builder.addCase(logout.fulfilled, (state, action) => {
         state.fetchStatus = 'success'
@@ -348,14 +328,14 @@ const accountSlice = createSlice({
       // getAuthUser
       builder.addCase(getAuthUser.pending, (state, action) => {
         state.fetchStatus = 'pending'
-        state.account = {} as MAccount
+        state.user = {} as User
       });
       builder.addCase(getAuthUser.fulfilled, (state, action) => {
         state.fetchStatus = 'success'
         console.log('getAuthUser.fulfilled★ action.payload', action.payload)
 
         if(action.payload && action.payload.data) {
-          state.account = action.payload.data
+          state.user = action.payload.data
         }
       });
       builder.addCase(getAuthUser.rejected, (state, action) => {
@@ -365,14 +345,14 @@ const accountSlice = createSlice({
       // gethUser
       builder.addCase(getUser.pending, (state, action) => {
         state.fetchStatus = 'pending'
-        state.account = {} as MAccount
+        state.user = {} as User
       });
       builder.addCase(getUser.fulfilled, (state, action) => {
         state.fetchStatus = 'success'
         //console.log('getUser.fulfilled★ action.payload', action.payload)
 
         if(action.payload && action.payload) {
-          state.account = action.payload
+          state.user = action.payload
         }
       });
       builder.addCase(getUser.rejected, (state, action) => {
@@ -384,9 +364,9 @@ const accountSlice = createSlice({
 })
 
 export const fetchStatus       = (state: RootState) => state.account.fetchStatus;
-export const account           = (state: RootState) => state.account.account;
+export const user              = (state: RootState) => state.account.user;
 export const accessToken       = (state: RootState) => state.account.accessToken;
-export const isAccountLoggedIn = (state: RootState) => (state.account.account?.userid) ? true : false;
+export const isLoggedIn        = (state: RootState) => (state.account.user?.id) ? true : false;
 
 export const updateStatus      = (state: RootState) => state.account.updateStatus;
 export const updateError       = (state: RootState) => state.account.updateError;
@@ -399,7 +379,7 @@ export default accountSlice.reducer;
 
 
 interface AccountState {
-  account:      MAccount | null;
+  user:         User | null;
   accessToken:  string | null;
   fetchStatus:  string;
   updateStatus: string;

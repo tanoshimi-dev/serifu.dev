@@ -4,7 +4,6 @@ import customerSlice from "@/lib/rtk/slices/customerSlice"
 import customersSlice from "@/lib/rtk/slices/customersSlice"
 import masterDataSlice from "@/lib/rtk/slices/masterDataSlice"
 import accountSlice from "@/lib/rtk/slices/accountSlice"
-import temporaryListSlice from "@/lib/rtk/slices/temporaryListSlice"
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +12,6 @@ export const store = configureStore({
         customers:        customersSlice,
         masterData:       masterDataSlice,
         account:          accountSlice,
-        temporaryList:    temporaryListSlice,
     }
 })
 

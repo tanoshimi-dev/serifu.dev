@@ -17,7 +17,7 @@ import Header from '../../components/Header';
 import TemplateFrame from '../TemplateFrame';
 import Link from 'next/link'
 
-import Login from './Login';
+import Reservation from './Reservation';
 
 import { Button, Modal, Typography } from '@mui/material';
 
@@ -43,6 +43,9 @@ export default function Dashboard() {
     <TemplateFrame>
       <CssBaseline enableColorScheme />
       <Header />
+      <Box sx={{ p: 1}} >
+
+      </Box>
 
       <Box sx={{ display: 'flex' }}>
 
@@ -68,9 +71,8 @@ export default function Dashboard() {
             }}
           >
             {/* <MainGrid /> */}
-            <Login/>
-
-
+            <Reservation/>
+          
           </Stack>
         </Box>
       </Box>

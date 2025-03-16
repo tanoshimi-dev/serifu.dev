@@ -13,11 +13,10 @@ import Stack from '@mui/material/Stack';
 
 //import Header from './components/Header';
 // import TemplateFrame from './TemplateFrame';
-import Header from '../../components/Header';
-import TemplateFrame from '../TemplateFrame';
+import Header from '../../../components/Header';
+import TemplateFrame from '../../TemplateFrame';
 import Link from 'next/link'
 
-import Login from './Login';
 
 import { Button, Modal, Typography } from '@mui/material';
 
@@ -43,6 +42,9 @@ export default function Dashboard() {
     <TemplateFrame>
       <CssBaseline enableColorScheme />
       <Header />
+      <Box sx={{ p: 1}} >
+
+      </Box>
 
       <Box sx={{ display: 'flex' }}>
 
@@ -68,9 +70,12 @@ export default function Dashboard() {
             }}
           >
             {/* <MainGrid /> */}
-            <Login/>
-
-
+            <>同意書</>
+            <Link href={`/account`} passHref >
+              <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
+                戻る
+              </Typography>
+            </Link>
           </Stack>
         </Box>
       </Box>

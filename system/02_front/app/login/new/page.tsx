@@ -13,11 +13,11 @@ import Stack from '@mui/material/Stack';
 
 //import Header from './components/Header';
 // import TemplateFrame from './TemplateFrame';
-import Header from '../../components/Header';
-import TemplateFrame from '../TemplateFrame';
+import Header from '../../../components/Header';
+import TemplateFrame from '../../TemplateFrame';
 import Link from 'next/link'
 
-import Login from './Login';
+import ProfileEditor from './ProfileEditor';
 
 import { Button, Modal, Typography } from '@mui/material';
 
@@ -43,6 +43,9 @@ export default function Dashboard() {
     <TemplateFrame>
       <CssBaseline enableColorScheme />
       <Header />
+      <Box sx={{ p: 1}} >
+
+      </Box>
 
       <Box sx={{ display: 'flex' }}>
 
@@ -68,8 +71,14 @@ export default function Dashboard() {
             }}
           >
             {/* <MainGrid /> */}
-            <Login/>
+            <ProfileEditor/>
 
+
+            {/* <Link href={`/account/consent`} passHref >
+              <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
+                同意書
+              </Typography>
+            </Link> */}
 
           </Stack>
         </Box>

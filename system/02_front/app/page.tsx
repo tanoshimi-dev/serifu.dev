@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect, useCallback, use, Suspense } from "react";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import Image from "next/image";
 import styles from "./page.module.css";
@@ -24,45 +24,36 @@ export default function Home() {
         <CssBaseline enableColorScheme />
         <Header />
         <Box sx={{ mx:3, display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'center', height: '60vh'
+          alignItems: 'center', justifyContent: 'start', height: '60vh'
          }}>
 
-          <Box>
+          <Box sx={{ my: 2 }}>
             <Box>
               <Image src="/images/no_image_square.jpg" alt="logo" width={180} height={120} />
             </Box>
           </Box>
 
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ mb: 1 }}>
             <Box sx={{ textAlign: 'center' }}>
-              <Typography>
-              ようこそ
+              <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600, fontSize: '1rem' }}>
+                山岡 士郎 さん
               </Typography>
             </Box>
-            <Box>
+            <Box sx={{ mt: 2, textAlign: 'center' }}>
               <Typography>
-              XXXXXXXXXXXXXXXXXXXXXXXXです。
-              </Typography>
-            </Box>
-            <Box sx={{ textAlign: 'center' }}>
-              <Typography>
-              以下よりメニューを選択してください。
+              次回の検診予定日は以下の通りです。
               </Typography>
             </Box>
           </Box>
-
-          <Box sx={{ mb: 2 }}>
-            <Button
-              sx={{ minWidth: '360px' }}
-              variant="outlined" color="primary" onClick={() => router.push("/customer/histories")}>
-              個人情報を登録する
-            </Button>
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+            <Box>東京都新宿区 新宿健診プラザ</Box>
+            <Box>2025/02/18　09:45 - 10:00</Box>
           </Box>
 
-          <Box sx={{ mb: 2 }}>
+          {/* <Box sx={{ mb: 2 }}>
             <Button
               sx={{ minWidth: '360px' }}
-              variant="outlined" color="primary" onClick={() => router.push("/customer/histories")}>
+              variant="outlined" color="primary" onClick={() => router.push("/reservation")}>
               予約/変更
             </Button>
 
@@ -74,7 +65,7 @@ export default function Home() {
               variant="outlined" color="primary" onClick={() => router.push("/customer/histories")}>
               予約の確認/キャンセル
             </Button>
-          </Box>
+          </Box> */}
 
 
         </Box>

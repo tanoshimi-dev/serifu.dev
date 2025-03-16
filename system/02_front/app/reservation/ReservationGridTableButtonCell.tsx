@@ -11,8 +11,6 @@ import RowInnerContents from './RowInnerContents';
 import { Box, Button, Modal, Stack, Typography } from '@mui/material';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
 import ClearIcon from '@mui/icons-material/Clear';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import Link from 'next/link';
 
 // interface Column {
 //   id: 'name' | 'code' | 'population' | 'size' | 'density';
@@ -97,7 +95,7 @@ const style = {
   p: 4,
 };
 
-export default function ReservationGridTable() {
+export default function ReservationGridTableButtonCell() {
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -126,27 +124,7 @@ export default function ReservationGridTable() {
   return (
     <Paper sx={{ width: '100%' }}>
 
-      <Box sx={{ backgroundColor: 'hsla(0, 0%, 99%, 1)' }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box>
-            <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
-            東京都新宿区 新宿健診プラザ
-            </Typography>
-          </Box>
-          <Box>
-            <Link href="/reservation/location">
-              別会場を選択
-            </Link>
-          </Box>
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', my:1, }}>
-          <Box>
-            検診期間：2025/02/01 - 2025/02/29
-          </Box>
-        </Box>
-      </Box>
-
-        {/* <Button onClick={handleOpen}>Open modal</Button> */}
+      {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         open={open}
         onClose={handleClose}
@@ -200,7 +178,7 @@ export default function ReservationGridTable() {
                   position: 'sticky', left: 0, zIndex: 300, 
                   width:'8px', px: 0, pt: 0.75, backgroundColor: 'hsl(0, 0%, 99%)' }}>
                 <Box>
-                  
+                  Time
                 </Box>
               </TableCell>
               <TableCell key={`mon`} align={`center`}>
@@ -250,10 +228,10 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  {/* <Box sx={{ my:0.5 }}>
+                  <Box sx={{ my:0.5 }}>
                     空き：3
-                  </Box> */}
-                  {/* <Box sx={{ my:0.5 }}>
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
                     <Button
                       variant="contained"
                       size="small"
@@ -263,10 +241,6 @@ export default function ReservationGridTable() {
                     >
                       予約
                     </Button>
-                  </Box> */}
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> { handleReservation('2/17', '09:00') }}>
-                    <TripOriginIcon/>
                   </Box>
                 </Box>
               </TableCell>
@@ -274,11 +248,19 @@ export default function ReservationGridTable() {
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  {/* <Box sx={{ my:0.5 }}>
+                  <Box sx={{ my:0.5 }}>
                     空き：3
-                  </Box> */}
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> { handleReservation('2/18', '09:00') }}>
-                    <TripOriginIcon/>
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="button"
+                      onClick={()=> { handleReservation('2/18', '09:00') }}
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -286,7 +268,19 @@ export default function ReservationGridTable() {
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
+                  {/* <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box> */}
                   <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> { handleReservation('2/19', '09:00') }}>
+                    {/* <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="button"
+                      onClick={()=> { handleReservation('2/19', '09:00') }}
+                    >
+                      予約
+                    </Button> */}
                     <TripOriginIcon/>
                   </Box>
                 </Box>
@@ -295,22 +289,22 @@ export default function ReservationGridTable() {
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  {/* <Box sx={{ my:0.5 }}>
+                  <Box sx={{ my:0.5 }}>
                     空き：0
                   </Box>
                   <Box sx={{ my:0.5 }}> 
-                  </Box> */}
+                  </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  {/* <Box sx={{ my:0.5 }}>
+                  <Box sx={{ my:0.5 }}>
                     空き：0
                   </Box>
                   <Box sx={{ my:0.5 }}>
-                  </Box> */}
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -327,7 +321,7 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  {/* <Box sx={{ my:0.5 }}>
+                  <Box sx={{ my:0.5 }}>
                     空き：3
                   </Box>
                   <Box sx={{ my:0.5 }}>
@@ -339,20 +333,17 @@ export default function ReservationGridTable() {
                     >
                       予約
                     </Button>
-                  </Box> */}
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
-                  </Box>                  
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }} rowSpan={2}>
                 <Box>
-                  {/* <Box sx={{ my:0.5 }}>
+                  <Box sx={{ my:0.5 }}>
                     空き：2
-                  </Box> */}
-                  {/* <Box sx={{ my:0.5 }}>
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
                     <Button
                       variant="contained"
                       size="small"
@@ -361,43 +352,40 @@ export default function ReservationGridTable() {
                     >
                       予約
                     </Button>
-                  </Box> */}
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
-                  </Box>                  
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  {/* <Box sx={{ my:0.5 }}>
+                  <Box sx={{ my:0.5 }}>
                     空き：0
                   </Box>
                   <Box sx={{ my:0.5 }}>
-                  </Box> */}
+                  </Box>
                 </Box>
               </TableCell>
               
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }} rowSpan={2}>
                 <Box>
-                  {/* <Box sx={{ my:0.5 }}>
+                  <Box sx={{ my:0.5 }}>
                     空き：0
                   </Box>
                   <Box sx={{ my:0.5 }}>
-                  </Box> */}
+                  </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  {/* <Box sx={{ my:0.5 }}>
+                  <Box sx={{ my:0.5 }}>
                     空き：0
                   </Box>
                   <Box sx={{ my:0.5 }}>
-                  </Box> */}
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -429,8 +417,18 @@ export default function ReservationGridTable() {
               </TableCell> */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -453,15 +451,35 @@ export default function ReservationGridTable() {
               </TableCell> */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
-                  </Box>               
+                  <Box sx={{ my:0.5 }}>
+                    空き：2
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>                    
+                  </Box>
                 </Box>
               </TableCell>            
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -479,9 +497,18 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -510,21 +537,41 @@ export default function ReservationGridTable() {
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}> 
+                  </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -541,8 +588,18 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }} rowSpan={2}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：5
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -550,8 +607,18 @@ export default function ReservationGridTable() {
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -559,20 +626,41 @@ export default function ReservationGridTable() {
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}> 
+                  </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -608,29 +696,68 @@ export default function ReservationGridTable() {
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }} rowSpan={2}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：2
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
+                  <Box sx={{ my:0.5 }}>
+                    空き：4
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>                    
+                  </Box>
                 </Box>
               </TableCell>
               
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }} rowSpan={2}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -643,24 +770,88 @@ export default function ReservationGridTable() {
                 10:30
                 </Box>
               </TableCell>
+              {/* <TableCell align="center" width={80}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'start' }} >
+                <Box sx={{ my:1 }} >
+                    空き：3
+                  </Box>
+                  <Box>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
+                </Box>
+              </TableCell> */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    {/* <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button> */}
+                  </Box>
                 </Box>
               </TableCell>
+              {/* <TableCell align="center" width={80}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'start' }} >
+                <Box sx={{ my:1 }} >
+                    空き：1
+                  </Box>
+                  <Box>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
+                </Box>
+              </TableCell> */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：2
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>                    
                   </Box>
                 </Box>
               </TableCell>            
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -678,9 +869,18 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -688,9 +888,18 @@ export default function ReservationGridTable() {
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -698,8 +907,18 @@ export default function ReservationGridTable() {
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <ClearIcon sx={{ color: 'red' }}/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -707,16 +926,22 @@ export default function ReservationGridTable() {
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}> 
                   </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -733,15 +958,37 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -749,9 +996,18 @@ export default function ReservationGridTable() {
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -759,15 +1015,21 @@ export default function ReservationGridTable() {
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}> 
+                  </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
                   </Box>
                 </Box>
               </TableCell>
@@ -785,9 +1047,18 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -795,9 +1066,18 @@ export default function ReservationGridTable() {
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }} rowSpan={2}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：2
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -805,21 +1085,33 @@ export default function ReservationGridTable() {
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
               
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }} rowSpan={2}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -851,9 +1143,18 @@ export default function ReservationGridTable() {
               </TableCell> */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -876,16 +1177,35 @@ export default function ReservationGridTable() {
               </TableCell> */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：2
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>                    
                   </Box>
                 </Box>
               </TableCell>            
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -903,15 +1223,37 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -919,9 +1261,18 @@ export default function ReservationGridTable() {
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -929,14 +1280,22 @@ export default function ReservationGridTable() {
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}> 
+                  </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -953,9 +1312,18 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }} rowSpan={2}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：5
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -963,16 +1331,37 @@ export default function ReservationGridTable() {
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
                 </Box>
               </TableCell>
               
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -980,16 +1369,22 @@ export default function ReservationGridTable() {
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}> 
                   </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -1025,9 +1420,18 @@ export default function ReservationGridTable() {
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }} rowSpan={2}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：2
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -1035,21 +1439,33 @@ export default function ReservationGridTable() {
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
               
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }} rowSpan={2}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -1081,7 +1497,19 @@ export default function ReservationGridTable() {
               </TableCell> */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    {/* <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button> */}
+                  </Box>
                 </Box>
               </TableCell>
               {/* <TableCell align="center" width={80}>
@@ -1103,15 +1531,35 @@ export default function ReservationGridTable() {
               </TableCell> */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：2
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>                    
                   </Box>
                 </Box>
               </TableCell>            
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -1129,16 +1577,37 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -1146,23 +1615,41 @@ export default function ReservationGridTable() {
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}> 
                   </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -1179,17 +1666,37 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -1197,8 +1704,18 @@ export default function ReservationGridTable() {
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -1206,12 +1723,22 @@ export default function ReservationGridTable() {
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}> 
+                  </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -1228,9 +1755,18 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -1238,30 +1774,51 @@ export default function ReservationGridTable() {
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }} rowSpan={2}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：2
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
               
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }} rowSpan={2}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
                   </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
                   </Box>
                 </Box>
               </TableCell>
@@ -1294,8 +1851,18 @@ export default function ReservationGridTable() {
               </TableCell> */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -1318,15 +1885,35 @@ export default function ReservationGridTable() {
               </TableCell> */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：2
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>                    
                   </Box>
                 </Box>
               </TableCell>            
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <ClearIcon sx={{ color: 'red' }}/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -1344,15 +1931,37 @@ export default function ReservationGridTable() {
               {/* Monday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Tuesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：3
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
                   </Box>
                 </Box>
               </TableCell>
@@ -1360,23 +1969,41 @@ export default function ReservationGridTable() {
               {/* Wednesday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：1
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      type="submit"
+                    >
+                      予約
+                    </Button>
+                  </Box>
                 </Box>
               </TableCell>
 
               {/* Thursday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-                  <Box sx={{ my:0.5, cursor: 'pointer' }} onClick={()=> {}}>
-                    <TripOriginIcon/>
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}> 
                   </Box>
                 </Box>
               </TableCell>
 
-              {/* Friday */}
+               {/* Friday */}
               <TableCell align="center" width={60} sx={{ p: 0 }}>
                 <Box>
-
+                  <Box sx={{ my:0.5 }}>
+                    空き：0
+                  </Box>
+                  <Box sx={{ my:0.5 }}>
+                  </Box>
                 </Box>
               </TableCell>
             </TableRow>
@@ -1387,35 +2014,15 @@ export default function ReservationGridTable() {
 
         </Table>
       </TableContainer>
-
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', my: 1, backgroundColor: 'hsla(220, 20%, 97.6%, 1)' }}>
-        <Box>
-          <CalendarMonthIcon sx={{ m:1 }}/>
-        </Box>
-        
-        <Box>
-          <Button
-            sx={{ mr: 1 }}
-            variant="outlined"
-            size="small"
-            color="primary"
-            type="submit"
-          >
-            前週
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            color="primary"
-            type="submit"
-          >
-            翌週
-          </Button>
-        </Box>
-
-      </Box>
-
+      {/* <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      /> */}
     </Paper>
- 
   );
 }

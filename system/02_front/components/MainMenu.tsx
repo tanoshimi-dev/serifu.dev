@@ -17,23 +17,53 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
   },
 }));
 
-export default function MainMenu() {
+interface MainMenuProps {
+  currentUrl: string;
+}
+
+export default function MainMenu({ currentUrl }: MainMenuProps): React.JSX.Element {
   return (
     <Box sx={{ ml:2, display: 'flex', alignItems: 'center', gap: 1,  height: '40px' }}>
-      <Link href={`/home`} passHref >
-        <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
-          ホーム
-        </Typography>
+      <Link href={`/`} passHref>
+        {currentUrl == '/' 
+          ?
+          <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
+            トップ
+          </Typography>
+          :
+          <>トップ</>
+        }
       </Link>
-      <Link href={`/search/temporary`} passHref >
-        <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
-         仮登録
-        </Typography>
+      
+      {/* <Link href={`/confirmation`} passHref >
+        {currentUrl == '/confirmation/' 
+          ?
+          <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
+            予約確認
+          </Typography>
+          :
+          <>予約確認</>
+        }
       </Link>
-      <Link href={`/search/permanent`} passHref >
-        <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
-          本登録
-        </Typography>
+      <Link href={`/reservation`} passHref >
+        { (currentUrl && currentUrl.startsWith('/reservation/'))
+          ?
+          <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
+            受診予約
+          </Typography>
+          :
+          <>受診予約</>
+        }
+      </Link> */}
+      <Link href={`/quote`} passHref >
+        { (currentUrl && currentUrl.startsWith('/quote/'))
+          ?
+          <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
+            セリフ
+          </Typography>
+          :
+          <>セリフ</>
+        }
       </Link>
     </Box>
   );

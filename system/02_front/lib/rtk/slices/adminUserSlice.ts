@@ -23,7 +23,7 @@ const initialState: AdminUserState = {
   adminUser: null,
 };
 
-export const login = createAsyncThunk(
+export const loginAdmin = createAsyncThunk(
   "adminuser/login", 
   async (params, thankApi) => {
 
@@ -224,11 +224,11 @@ const adminUserSlice = createSlice({
       }); 
 
       // login
-      builder.addCase(login.pending, (state, action) => {
+      builder.addCase(loginAdmin.pending, (state, action) => {
         state.status = 'pending'
         state.adminUser = null
       });
-      builder.addCase(login.fulfilled, (state, action) => {
+      builder.addCase(loginAdmin.fulfilled, (state, action) => {
         state.status = 'success'
         console.log('★login.fulfilled★ action.payload', action.payload)
         // state.user = action.payload.data;
@@ -236,7 +236,7 @@ const adminUserSlice = createSlice({
           state.adminUser = action.payload.data
         }
       });
-      builder.addCase(login.rejected, (state, action) => {
+      builder.addCase(loginAdmin.rejected, (state, action) => {
         state.status = 'failed'
       });
 
