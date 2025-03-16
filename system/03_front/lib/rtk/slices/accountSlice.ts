@@ -2,7 +2,9 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from 'axios';
 import type { RootState  } from '../store'
 import { User } from '@/lib/types/user';
-import { ApiArgsUserLogin, ApiArgsAccount, ApiArgsCustomerUpsert } from '@/lib/types/api_args';
+import { 
+  ApiArgsUserLogin, ApiArgsUserEmailVerify, ApiArgsUserRegister,
+  ApiArgsAccount, ApiArgsCustomerUpsert } from '@/lib/types/api_args';
 
 const url = process.env.NEXT_PUBLIC_API_URL??'';
 const suffix = process.env.NEXT_PUBLIC_API_URL_SUFFIX??'';
@@ -142,6 +144,118 @@ export const logout = createAsyncThunk("account/logout", async () => {
 
 });
 
+export const emailVerify = createAsyncThunk("account/emailVerify", async (params: ApiArgsUserEmailVerify) => {
+
+  try {
+
+    //let xsrfToken = document.cookie.split('; ').find(row => row.startsWith("XSRF-TOKEN"));
+    let xsrfToken = document.cookie.split('; ').find(row => row.startsWith(process.env.NEXT_PUBLIC_XSRF_TOKEN ?? ''));
+
+    if (xsrfToken) {
+        xsrfToken = xsrfToken.split('=')[1]
+    }
+    const url = params.url;
+    
+    console.log('★API★ emailVerify', `${url}`);
+
+    const response = await fetch(`${url}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken ?? ''),
+        //'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      credentials: 'include'
+    });
+
+
+    console.log('★API★ emailVerify response', response);
+
+
+    if (!response.ok) {
+      return;
+    }
+
+    //console.log('★API★ login response', response)
+    const data = await response.json(); // Extract JSON data from the response
+    //console.log('★API★ login ', data);
+    return data;
+
+  } catch (error) {
+    console.error('★API★ emailVerify error', error);
+    return error;
+  }
+
+
+});
+
+export const register = createAsyncThunk("account/register", async (params: ApiArgsUserRegister) => {
+
+  try {
+    const sanctumResponse = await fetch(`${apiUrl}sanctum/csrf-cookie`, {
+      method: 'GET',
+      credentials: 'include',
+      cache: 'no-store',
+    });
+
+    if (!sanctumResponse.ok) {
+      //console.error('💀　HTTP error1', sanctumResponse.status);
+      return;
+    }
+
+    //let xsrfToken = document.cookie.split('; ').find(row => row.startsWith("XSRF-TOKEN"));
+    let xsrfToken = document.cookie.split('; ').find(row => row.startsWith(process.env.NEXT_PUBLIC_XSRF_TOKEN ?? ''));
+
+    if (xsrfToken) {
+        xsrfToken = xsrfToken.split('=')[1]
+    }
+    const name = params.name;
+    const email = params.email;
+    const password = params.password;
+
+    console.log('★API★ register url', `${apiUrl}register`, params);
+    //console.log('★API★ xsrfToken', xsrfToken);
+    
+    const response = await fetch(`${apiUrl}register`, {
+      // fetch("https://rehop.jp/demo/trade_back/public/login", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        //'X-Requested-With': 'XMLHttpRequest',
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken ?? ''),
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        name:    name,
+        email:   email,
+        password: password,
+        password_confirmation: password // TODO
+      }),
+
+    });
+
+
+    console.log('★API★ register response', response);
+
+
+    if (!response.ok) {
+      return;
+    }
+
+    //console.log('★API★ login response', response)
+    const data = await response.json(); // Extract JSON data from the response
+    //console.log('★API★ login ', data);
+    return data;
+
+  } catch (error) {
+    console.error('★API★ login error', error);
+    return error;
+  }
+
+
+});
 
 export const rememberMeLogin = createAsyncThunk("account/remember-me-login", async () => {
 
@@ -295,6 +409,39 @@ const accountSlice = createSlice({
         state.fetchStatus = 'failed'
       });
 
+      // emailVerify
+      builder.addCase(emailVerify.pending, (state, action) => {
+        state.fetchStatus = 'pending'
+        state.user = {} as User
+        state.accessToken = null
+      });
+      builder.addCase(emailVerify.fulfilled, (state, action) => {
+        state.fetchStatus = 'success'
+
+        if(action.payload && action.payload.data) {
+          state.user = action.payload.data
+        }
+      });     
+      builder.addCase(emailVerify.rejected, (state, action) => {
+        state.fetchStatus = 'failed'
+      });
+
+      // register
+      builder.addCase(register.pending, (state, action) => {
+        state.fetchStatus = 'pending'
+        state.user = {} as User
+      });
+      builder.addCase(register.fulfilled, (state, action) => {
+        state.fetchStatus = 'success'
+        console.log('register.fulfilled★ action.payload', action.payload)
+
+        if(action.payload && action.payload) {
+          state.user = action.payload
+        }
+      });
+      builder.addCase(register.rejected, (state, action) => {
+        state.fetchStatus = 'failed'
+      });      
 
       // rememberMeLogin
       builder.addCase(rememberMeLogin.pending, (state, action) => {

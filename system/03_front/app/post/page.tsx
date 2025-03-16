@@ -17,7 +17,7 @@ import Header from '../../components/Header';
 import TemplateFrame from '../TemplateFrame';
 import Link from 'next/link'
 
-import QuoteForm from './QuoteForm';
+import PostForm from './PostForm';
 
 import { Button, Modal, Typography } from '@mui/material';
 
@@ -33,7 +33,7 @@ const style = {
   p: 4,
 };
 
-export default function Dashboard() {
+export default function Page() {
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -71,7 +71,7 @@ export default function Dashboard() {
             }}
           >
             {/* <MainGrid /> */}
-            <QuoteForm/>
+            <PostForm/>
 
 
           </Stack>

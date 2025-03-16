@@ -108,7 +108,7 @@ export default function ProfileEditor() {
     setOptions(defaultOptions)
     console.log('option:', options)
   }
-  , [options]);
+  , []);
 
   const defaultValues = {
     sex: '0',

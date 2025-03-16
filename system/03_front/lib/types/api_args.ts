@@ -8,6 +8,17 @@ export interface ApiArgsUserLogin {
   password?: string | null;
 }
 
+export interface ApiArgsUserEmailVerify {
+  url?:    string | null;
+}
+
+export interface ApiArgsUserRegister{
+  name?:     string | null;
+  email?:    string | null;
+  password?: string | null;
+}
+
+
 export interface ApiArgsCustomer {
   mu_usercode?: string | null;
 }

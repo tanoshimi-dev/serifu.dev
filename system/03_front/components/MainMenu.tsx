@@ -55,8 +55,8 @@ export default function MainMenu({ currentUrl }: MainMenuProps): React.JSX.Eleme
           <>受診予約</>
         }
       </Link> */}
-      <Link href={`/quote`} passHref >
-        { (currentUrl && currentUrl.startsWith('/quote/'))
+      <Link href={`/post`} passHref >
+        { (currentUrl && currentUrl.startsWith('/post/'))
           ?
           <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
             セリフ

@@ -4,9 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from '@/lib/rtk/store';
 import { 
   login, fetchStatus, user, logout,
-  rememberMeLogin, getAuthUser, getUser, isLoggedIn
+  rememberMeLogin, getAuthUser, getUser, isLoggedIn,
+  emailVerify
 } from '@/lib/rtk/slices/accountSlice';
-import { ApiArgsUserLogin } from '@/lib/types/api_args';
+import { ApiArgsUserEmailVerify, ApiArgsUserLogin } from '@/lib/types/api_args';
 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -74,6 +75,34 @@ export default function Login() {
 
   };
 
+  const handleLogout = () => {
+
+    console.log('handleLogout');
+
+    dispatch(logout());
+
+  };
+
+  const [emailVerifyUrl, setEmailVerifyUrl] = React.useState('');
+
+  const handleEmailVerify = () => {
+    //event.preventDefault();
+
+    console.log('mail_verification=>', emailVerifyUrl);
+
+    dispatch(emailVerify({url: emailVerifyUrl} as ApiArgsUserEmailVerify));
+
+  };
+
+  
+  const handleGetUser = () => {
+    //event.preventDefault();
+
+    console.log('getUser');
+
+    dispatch(getUser());
+
+  };
 
   const apiResStatus = useSelector(fetchStatus);
   const apiResData = useSelector(user);
@@ -107,30 +136,7 @@ export default function Login() {
     mode: 'onChange',
     //resolver: zodResolver(userSchema)
   });
-
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const [reserveDateTime, setReserveDateTime] = React.useState('');
-
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-  const handleReservation = (data:string, time:string) => {
-    setReserveDateTime(data + ' ' + time);
-    setOpen(true);
-  }
+  
 
   return (
     <Box sx={{ px: 2 }} >  
@@ -158,7 +164,7 @@ export default function Login() {
                 autoComplete=""
                 required
                 size="small"
-                defaultValue={`aubrey.kovacek@example.com`}
+                defaultValue={`mokon@example.com`}
                 />
             </Box>
           </Box>
@@ -192,8 +198,17 @@ export default function Login() {
             ログイン
           </Button>
         </Box>
-        <Divider sx={{ my: 1 }}/>
 
+        <Box sx={{ mt: 2, textAlign: 'center'  }}>
+          <Button
+            sx={{ minWidth: '320px' }}
+            variant="outlined" color="primary"
+            type="button"
+            onClick={handleLogout}>
+            ログアウト
+          </Button>
+        </Box>
+        <Divider sx={{ my: 1 }}/>
 
        <Link href={`/login`} passHref >
         <Box
@@ -210,6 +225,47 @@ export default function Login() {
             </Link>
           </Typography>
         </Box>
+
+        <Divider sx={{ my: 1 }}/>
+
+        <Box sx={{ mt: 2, textAlign: 'center'  }}>
+          <Box >
+              <OutlinedInput
+                sx={{ minWidth: '600px' }}
+                id="mail_verification"
+                name='mail_verification'
+                type="text"
+                autoComplete=""
+                size="small"
+                onInput={(e) => setEmailVerifyUrl((e.target as HTMLInputElement).value)}
+              />
+          </Box>
+          <Button
+            sx={{ minWidth: '320px' }}
+            variant="contained" 
+            color="inherit"
+            type="button"
+            onClick={handleEmailVerify}>
+            メール確認
+          </Button>
+
+        </Box>
+
+        <Divider sx={{ my: 1 }}/>
+
+        <Box sx={{ mt: 2, textAlign: 'center'  }}>
+          <Button
+            sx={{ minWidth: '320px' }}
+            variant="contained" 
+            color="inherit"
+            type="button"
+            onClick={handleGetUser}>
+            ユーザー情報取得
+          </Button>
+        
+        </Box>
+        <Divider sx={{ my: 1 }}/>
+
 
       </form>
     </Box>
