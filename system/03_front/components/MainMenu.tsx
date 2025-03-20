@@ -5,6 +5,7 @@ import Breadcrumbs, { breadcrumbsClasses } from '@mui/material/Breadcrumbs';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import { Box } from '@mui/material';
 import Link from 'next/link'
+import { User } from '@/lib/types/user';
 
 const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
   margin: theme.spacing(1, 0),
@@ -17,11 +18,15 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
   },
 }));
 
-interface MainMenuProps {
-  currentUrl: string;
-}
 
-export default function MainMenu({ currentUrl }: MainMenuProps): React.JSX.Element {
+interface Props {
+  currentUrl: string;
+  currentUser: User;
+}
+export default function MainMenu({ currentUrl, currentUser }: Props): React.JSX.Element {
+
+  console.log('MENU currentUser', currentUser) 
+
   return (
     <Box sx={{ ml:2, display: 'flex', alignItems: 'center', gap: 1,  height: '40px' }}>
       <Link href={`/`} passHref>
@@ -44,17 +49,19 @@ export default function MainMenu({ currentUrl }: MainMenuProps): React.JSX.Eleme
           :
           <>みんなが使ったセリフ</>
         }
-      </Link>      
-      <Link href={`/use`} passHref >
-        { (currentUrl && currentUrl.startsWith('/use/'))
-          ?
-          <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
-            使う
-          </Typography>
-          :
-          <>使う</>
-        }
       </Link>
+      {currentUser?.id &&
+        <Link href={`/use`} passHref >
+          { (currentUrl && currentUrl.startsWith('/use/'))
+            ?
+            <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
+              使う
+            </Typography>
+            :
+            <>使う</>
+          }
+        </Link>
+      }
     </Box>
   );
 }

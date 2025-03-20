@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, Suspense } from 'react';
@@ -18,10 +17,15 @@ import CircularProgress from '@mui/material/CircularProgress';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
-interface MainMenuProps {
+
+import { User } from '@/lib/types/user';
+
+
+interface Props {
   currentUrl: string;
+  currentUser: User;
 }
-export default function Login({ currentUrl }: MainMenuProps): React.JSX.Element {
+export default function Login({ currentUrl, currentUser }: Props): React.JSX.Element {
   const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
 
@@ -36,13 +40,14 @@ export default function Login({ currentUrl }: MainMenuProps): React.JSX.Element 
   console.log('アカウントapiResStatus', apiResStatus) 
   console.log('アカウントapiResIsLoggedIn', apiResIsLoggedIn) 
   console.log('アカウントapiResData', apiResData) 
-  
-  useEffect(() => {
-    // dispatch(getAuthUser());
-    console.log('アカウント -----------------------')    
-    dispatch(getUser());
+  console.log('currentUser', currentUser) 
+
+  // useEffect(() => {
+  //   // dispatch(getAuthUser());
+  //   console.log('アカウント -----------------------')    
+  //   dispatch(getUser());
     
-  }, []);
+  // }, []);
 
   const handleSignOut = () => {
     console.log('handleSignOut');
@@ -79,10 +84,10 @@ export default function Login({ currentUrl }: MainMenuProps): React.JSX.Element 
         <CircularProgress color="inherit" />
       </Backdrop>
 
-      {(apiResIsLoggedIn && apiResData) ? 
+      {(currentUser?.id) ? 
         <>
           <Box sx={{ pt: '1px' }}>
-            {apiResData?.name}
+            {currentUser?.name}
           </Box>
           <Box sx={{ ml: 0.5}} onClick={handleSignOut}>
             <LoginRoundedIcon/>

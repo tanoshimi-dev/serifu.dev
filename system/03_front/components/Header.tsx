@@ -1,7 +1,13 @@
 'use client';
 
-import * as React from 'react';
+import React, { createContext, useContext, useState, useEffect, Suspense } from 'react';
 
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from '@/lib/rtk/store';
+import { 
+  login as accountLogin, fetchStatus, user, isLoggedIn, logout as accountLogout,
+  rememberMeLogin, getUser
+} from '@/lib/rtk/slices/accountSlice';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 
 import Stack from '@mui/material/Stack';
@@ -21,6 +27,8 @@ import Login from './Login';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import Link from 'next/link'
+
+import { User } from '@/lib/types/user';
 
 function Item(props: BoxProps) {
 
@@ -54,10 +62,31 @@ function Item(props: BoxProps) {
 
 
 export default function Header() {
+  const dispatch: AppDispatch = useDispatch();
+  const router = useRouter();
+
+  const apiResStatus = useSelector(fetchStatus);
+  const apiResData = useSelector(user);
+  const apiResIsLoggedIn = useSelector(isLoggedIn);
 
   const pathname = usePathname();
   console.log('pathname', pathname);
 
+  useEffect(() => {
+    // dispatch(getAuthUser());
+    console.log('アカウント -----------------------')    
+    dispatch(getUser());
+    
+  }, [pathname]);
+
+  // useEffect(() => {
+  //   if ( apiResStatus === 'success' && apiResData) {
+  //     console.log('apiResData', apiResData);
+
+  //     setUser(apiResData);
+
+  //   }
+  // }, [apiResStatus, apiResData]);
 
   return (
 
@@ -72,7 +101,10 @@ export default function Header() {
     }}
   >
     <Box sx={{ gridArea: 'mainManu', }}>
-      <MainMenu currentUrl={pathname} />
+      <MainMenu 
+        currentUrl={pathname} 
+        currentUser={apiResData as User} 
+      />
     </Box>
     {/* <Box sx={{ gridArea: 'subMenu', alignSelf: 'center', justifySelf: 'end' }}>
       <MenuButton showBadge aria-label="Open notifications">
@@ -86,7 +118,10 @@ export default function Header() {
        </Link>
        test
        */}
-      <Login currentUrl={pathname} />
+      <Login 
+        currentUrl={pathname} 
+        currentUser={apiResData as User} 
+      />
     </Box>
   </Box>
 
