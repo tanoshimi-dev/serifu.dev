@@ -17,7 +17,7 @@ import Header from '../../components/Header';
 import TemplateFrame from '../TemplateFrame';
 import Link from 'next/link'
 
-import Login from './Login';
+import LoginForm from './LoginForm';
 
 import { Button, Modal, Typography } from '@mui/material';
 
@@ -68,7 +68,7 @@ export default function Dashboard() {
             }}
           >
             {/* <MainGrid /> */}
-            <Login/>
+            <LoginForm/>
 
 
           </Stack>

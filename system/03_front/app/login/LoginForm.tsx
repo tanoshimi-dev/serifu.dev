@@ -9,22 +9,9 @@ import {
 } from '@/lib/rtk/slices/accountSlice';
 import { ApiArgsUserEmailVerify, ApiArgsUserLogin } from '@/lib/types/api_args';
 
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import { Box, Button, Divider, FormControl, FormControlLabel, FormHelperText, FormLabel, Modal, OutlinedInput, RadioGroup, Stack, Typography, Radio, Select, MenuItem } from '@mui/material';
-import TripOriginIcon from '@mui/icons-material/TripOrigin';
-import ClearIcon from '@mui/icons-material/Clear';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { Backdrop, Box, Button, Divider, FormControl, FormControlLabel, FormHelperText, FormLabel, Modal, OutlinedInput, RadioGroup, Stack, Typography, Radio, Select, MenuItem } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 
-import Grid from '@mui/material/Grid2';
-import TextField from '@mui/material/TextField';
-import FormGroup from '@mui/material/FormGroup';
 
 import { styled } from '@mui/system';
 
@@ -47,10 +34,17 @@ const style = {
   p: 4,
 };
 
-export default function Login() {
+export default function LoginForm() {
   const dispatch: AppDispatch = useDispatch();
   //const { login, logout } = useAuth();
   const router = useRouter();
+
+
+
+  const apiResStatus = useSelector(fetchStatus);
+  const apiResData = useSelector(user);
+  const apiResIsLoggedIn = useSelector(isLoggedIn);
+  const [loginOperation, setLoginOperation] = React.useState(false);
 
   useEffect(() => {
     // dispatch(getAuthUser());
@@ -70,6 +64,8 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
     const email   = data.get('email');
     const password = data.get('password');
+
+    setLoginOperation(true);
 
     dispatch(login({email, password} as ApiArgsUserLogin));
 
@@ -97,16 +93,32 @@ export default function Login() {
   
   const handleGetUser = () => {
     //event.preventDefault();
-
     console.log('getUser');
-
     dispatch(getUser());
 
   };
 
-  const apiResStatus = useSelector(fetchStatus);
-  const apiResData = useSelector(user);
-  const apiResIsLoggedIn = useSelector(isLoggedIn);
+  useEffect(() => {
+    if ( loginOperation && apiResStatus === 'success' && apiResData) {
+
+      // setErrorMessage(null);
+
+      if (apiResIsLoggedIn) {
+        setLoginOperation(false);
+        router.push("/");
+      }
+
+      // if (loginOperation && !apiResIsLoggedIn) {
+      //   setErrorMessage('ログインに失敗しました');
+      //   setLogoffOperation(false);
+      //   setLoginOperation(false);
+      //   //setOpen(false);
+      // }
+
+
+    }
+  }, [apiResStatus, apiResData, apiResIsLoggedIn]);
+
 
   console.log('apiResData=>', apiResData)
   console.log('apiResIsLoggedIn=>', apiResIsLoggedIn);
@@ -139,7 +151,15 @@ export default function Login() {
   
 
   return (
-    <Box sx={{ px: 2 }} >  
+    <Box sx={{ px: 2 }} >
+
+      <Backdrop
+        sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+        open={loginOperation}
+      >  
+        <CircularProgress color="inherit" />
+      </Backdrop>      
+      
       {/* ログイン */}
       <form className="min-h-96 " onSubmit={handleLogin}>
       
