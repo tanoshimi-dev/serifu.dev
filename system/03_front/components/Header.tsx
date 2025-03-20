@@ -60,30 +60,6 @@ export default function Header() {
 
 
   return (
-    // <Stack
-    //   direction="row"
-    //   sx={{
-    //     display: { xs: 'none', md: 'flex' },
-    //     width: '100%',
-    //     alignItems: { xs: 'flex-start', md: 'center' },
-    //     justifyContent: 'space-between',
-    //     backgroundColor: '#f5f5f5',
-    //     height: '40px'
-    //   }}
-    //   spacing={2}
-    // >     
-    //   <Stack direction="row" sx={{ gap: 1,  }}>
-    //     <LeftMenu />
-    //   </Stack>
-    //   <Stack direction="row" sx={{ gap: 1 }}>
-    //     <OptionsMenu />
-    //     <MenuButton showBadge aria-label="Open notifications">
-    //       <NotificationsRoundedIcon />
-    //     </MenuButton>
-    //     <ToggleColorMode mode={'dark'} toggleColorMode={()=>{ console.log('mode changed') }} />
-    //     <ColorModeIconDropdown />
-    //   </Stack>
-    // </Stack>
 
   <Box
     sx={{
@@ -105,12 +81,12 @@ export default function Header() {
     </Box> */}
     <Box sx={{ minHeight: '40px', display: 'flex', gridArea: 'subMenu', alignSelf: 'center',alignItems: 'center', justifySelf: 'end', pr: 2 }}>
       {/* <OptionsMenu />
-       */}
        <Link href={`/login`} passHref >
          <LoginRoundedIcon/>
        </Link>
        test
-      {/* <Login currentUrl={pathname} /> */}
+       */}
+      <Login currentUrl={pathname} />
     </Box>
   </Box>
 

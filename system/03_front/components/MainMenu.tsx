@@ -35,34 +35,24 @@ export default function MainMenu({ currentUrl }: MainMenuProps): React.JSX.Eleme
         }
       </Link>
       
-      {/* <Link href={`/confirmation`} passHref >
-        {currentUrl == '/confirmation/' 
+      <Link href={`/serifu`} passHref >
+        { (currentUrl && currentUrl.startsWith('/serifu/'))
           ?
           <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
-            予約確認
+            みんなが使ったセリフ
           </Typography>
           :
-          <>予約確認</>
+          <>みんなが使ったセリフ</>
         }
-      </Link>
-      <Link href={`/reservation`} passHref >
-        { (currentUrl && currentUrl.startsWith('/reservation/'))
+      </Link>      
+      <Link href={`/use`} passHref >
+        { (currentUrl && currentUrl.startsWith('/use/'))
           ?
           <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
-            受診予約
+            使う
           </Typography>
           :
-          <>受診予約</>
-        }
-      </Link> */}
-      <Link href={`/post`} passHref >
-        { (currentUrl && currentUrl.startsWith('/post/'))
-          ?
-          <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
-            セリフ
-          </Typography>
-          :
-          <>セリフ</>
+          <>使う</>
         }
       </Link>
     </Box>

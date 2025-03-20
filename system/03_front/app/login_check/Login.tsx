@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from '@/lib/rtk/store';
 import { 
   login, fetchStatus, user, logout,
-  rememberMeLogin, getUser, isLoggedIn,
+  rememberMeLogin, getAuthUser, getUser, isLoggedIn,
   emailVerify
 } from '@/lib/rtk/slices/accountSlice';
 import { ApiArgsUserEmailVerify, ApiArgsUserLogin } from '@/lib/types/api_args';
@@ -60,7 +60,7 @@ export default function Login() {
     // }
 
     //setErrorMessage(null);
-    dispatch(getUser());
+    //dispatch(getUser());
     
   }, []);
 

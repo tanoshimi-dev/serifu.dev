@@ -20,29 +20,11 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 
-Route::get('/', function () {
-    // return Inertia::render('Welcome', [
-    //     'canLogin' => Route::has('login'),
-    //     'canRegister' => Route::has('register'),
-    //     'laravelVersion' => Application::VERSION,
-    //     'phpVersion' => PHP_VERSION,
-    // ]);
-    return view('welcome');
-});
-
-// Route::middleware('guest')->group(function () {
-//     Route::post('/login', [UserAuthController::class,"login"])->name('login');
-//     Route::post('/remember-me-login', [UserAuthController::class,"rememberMeLogin"])->name('rememberMeLogin');
+// Route::get('/', function () {
+//     return view('welcome');
 // });
-// Route::post('/logout', [UserAuthController::class,"logout"])->middleware('auth:sanctum')->name('logout');
 
-// Route::post('/login', [LoginController::class, 'login'])
-//     ->middleware('guest')
-//     ->name('login');
-
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+   
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -53,11 +35,9 @@ Route::middleware('auth')->group(function () {
 // sunctum
 require __DIR__.'/auth.php';
 
-// email verification
-// Route::get('/email/verify', function () {
-//     return view('auth.verify-email');
-// })->middleware('auth:sanctum')->name('verification.notice');
+// Route::middleware('auth')->group(function () {
+//     Route::get('/serifu', function () {
+//         return view('dashboard');
+//     })->name('dashboard');
+// });
 
-// Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-//     ->middleware(['auth:sanctum','signed', 'throttle:6,1'])
-//     ->name('verification.verify');

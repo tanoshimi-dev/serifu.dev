@@ -21,6 +21,7 @@ const initialState: AccountState = {
   updateError: undefined,
   updateErrorData: [],
   reLoginRequired: false,  
+  emailVerified: false,
 };
 
 
@@ -309,35 +310,35 @@ export const rememberMeLogin = createAsyncThunk("account/remember-me-login", asy
 });
 
 
-export const getAuthUser = createAsyncThunk("account/authuser", async () => {
+// export const getAuthUser = createAsyncThunk("account/authuser", async () => {
 
-  try {
-    const token = localStorage.getItem(tokenKey);
+//   try {
+//     const token = localStorage.getItem(tokenKey);
 
-    console.log('★API★ getAuthUser token', token);
+//     console.log('★API★ getAuthUser token', token);
 
-    const response = await fetch(`${apiUrl}api/get-user`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        //'Authorization': `Bearer ${localStorage.getItem('token')}`
-        //'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      }
-    });
+//     const response = await fetch(`${apiUrl}api/get-user`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         //'Authorization': `Bearer ${localStorage.getItem('token')}`
+//         //'Accept': 'application/json',
+//         'Authorization': `Bearer ${token}`,
+//       }
+//     });
 
-    if (!response.ok) {
-      return;
-    }
+//     if (!response.ok) {
+//       return;
+//     }
 
-    const data = await response.json(); // Extract JSON data from the response
-    return data;
+//     const data = await response.json(); // Extract JSON data from the response
+//     return data;
 
-  } catch (error) {
-  }
+//   } catch (error) {
+//   }
 
 
-});
+// });
 
 
 export const getUser = createAsyncThunk("account/user", async () => {
@@ -414,6 +415,7 @@ const accountSlice = createSlice({
         state.fetchStatus = 'pending'
         state.user = {} as User
         state.accessToken = null
+        state.emailVerified = false
       });
       builder.addCase(emailVerify.fulfilled, (state, action) => {
         state.fetchStatus = 'success'
@@ -421,6 +423,10 @@ const accountSlice = createSlice({
         if(action.payload && action.payload.data) {
           state.user = action.payload.data
         }
+
+        // TODO
+        state.emailVerified = true
+
       });     
       builder.addCase(emailVerify.rejected, (state, action) => {
         state.fetchStatus = 'failed'
@@ -473,21 +479,21 @@ const accountSlice = createSlice({
       });
 
       // getAuthUser
-      builder.addCase(getAuthUser.pending, (state, action) => {
-        state.fetchStatus = 'pending'
-        state.user = {} as User
-      });
-      builder.addCase(getAuthUser.fulfilled, (state, action) => {
-        state.fetchStatus = 'success'
-        console.log('getAuthUser.fulfilled★ action.payload', action.payload)
+      // builder.addCase(getAuthUser.pending, (state, action) => {
+      //   state.fetchStatus = 'pending'
+      //   state.user = {} as User
+      // });
+      // builder.addCase(getAuthUser.fulfilled, (state, action) => {
+      //   state.fetchStatus = 'success'
+      //   console.log('getAuthUser.fulfilled★ action.payload', action.payload)
 
-        if(action.payload && action.payload.data) {
-          state.user = action.payload.data
-        }
-      });
-      builder.addCase(getAuthUser.rejected, (state, action) => {
-        state.fetchStatus = 'failed'
-      });
+      //   if(action.payload && action.payload.data) {
+      //     state.user = action.payload.data
+      //   }
+      // });
+      // builder.addCase(getAuthUser.rejected, (state, action) => {
+      //   state.fetchStatus = 'failed'
+      // });
 
       // gethUser
       builder.addCase(getUser.pending, (state, action) => {
@@ -498,8 +504,8 @@ const accountSlice = createSlice({
         state.fetchStatus = 'success'
         //console.log('getUser.fulfilled★ action.payload', action.payload)
 
-        if(action.payload && action.payload) {
-          state.user = action.payload
+        if(action.payload && action.payload.data) {
+          state.user = action.payload.data
         }
       });
       builder.addCase(getUser.rejected, (state, action) => {
@@ -514,6 +520,7 @@ export const fetchStatus       = (state: RootState) => state.account.fetchStatus
 export const user              = (state: RootState) => state.account.user;
 export const accessToken       = (state: RootState) => state.account.accessToken;
 export const isLoggedIn        = (state: RootState) => (state.account.user?.id) ? true : false;
+export const emailVerified     = (state: RootState) => state.account.emailVerified;
 
 export const updateStatus      = (state: RootState) => state.account.updateStatus;
 export const updateError       = (state: RootState) => state.account.updateError;
@@ -533,5 +540,6 @@ interface AccountState {
   
   updateError: boolean | undefined;
   updateErrorData: string[];
-  reLoginRequired: boolean;  
+  reLoginRequired: boolean;
+  emailVerified: boolean;
 }

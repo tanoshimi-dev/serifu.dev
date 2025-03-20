@@ -29,10 +29,16 @@ use App\Http\Controllers\Api\TemporaryListController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
+// TODO
+// Route::middleware('verified')->group(function () {
+//     Route::get('/user', [UserAuthController::class, 'getUser'])->middleware('auth:sanctum');
+// });
+
+Route::get('/user', [UserAuthController::class, 'getUser'])->middleware('auth:sanctum');
 
 
 //work well? witout sunctum middleware

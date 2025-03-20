@@ -7,11 +7,14 @@ import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from '@/lib/rtk/store';
 import { 
-  login as accountLogin, fetchStatus, account, isAccountLoggedIn, logout as accountLogout,
+  login as accountLogin, fetchStatus, user, isLoggedIn, logout as accountLogout,
   rememberMeLogin, getAuthUser, getUser
 } from '@/lib/rtk/slices/accountSlice';
-import { Typography } from '@mui/material';
 
+import Link from 'next/link'
+
+import { Box, Typography, Backdrop } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
@@ -20,43 +23,83 @@ interface MainMenuProps {
 }
 export default function Login({ currentUrl }: MainMenuProps): React.JSX.Element {
   const dispatch: AppDispatch = useDispatch();
-  const apiResStatus = useSelector(fetchStatus);
-  const apiResData = useSelector(account);
-  const apiResIsLoggedIn = useSelector(isAccountLoggedIn);
+  const router = useRouter();
 
-  
-  // console.log('アカウントapiResStatus', apiResStatus) 
-  // console.log('アカウントapiResIsLoggedIn', apiResIsLoggedIn) 
-  //console.log('アカウントapiResData', apiResData) 
+  const apiResStatus = useSelector(fetchStatus);
+  const apiResData = useSelector(user);
+  const apiResIsLoggedIn = useSelector(isLoggedIn);
+
+  const [logoffOperation, setLogoffOperation] = React.useState(false);
+  const [loginOperation, setLoginOperation] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+
+  console.log('アカウントapiResStatus', apiResStatus) 
+  console.log('アカウントapiResIsLoggedIn', apiResIsLoggedIn) 
+  console.log('アカウントapiResData', apiResData) 
   
   useEffect(() => {
     // dispatch(getAuthUser());
-    //console.log('アカウント -----------------------')
-    
-    //dispatch(getUser());
+    console.log('アカウント -----------------------')    
+    dispatch(getUser());
     
   }, []);
 
+  const handleSignOut = () => {
+    console.log('handleSignOut');
+    setLogoffOperation(true);
+    setErrorMessage(null);
+
+    dispatch(accountLogout());
+  }
+
+  useEffect(() => {
+    if ( (loginOperation || logoffOperation) && apiResStatus === 'success' && apiResData) {
+      console.log('apiResData', apiResData);
+
+      setErrorMessage(null);
+
+      if (logoffOperation) {
+        console.log('Account Logged out');
+        setLogoffOperation(false);
+        setLoginOperation(false);
+        router.push("/");
+      }
+
+    }
+  }, [apiResStatus]);
+
 
   return (
-    <>
-      {/* {(apiResIsLoggedIn && apiResData) ? 
-      <>{apiResData?.userid}</> 
-      :
-      <>ゲスト</> 
-      } */}
+    <Box sx={{ py: 0, my:0, cursor: 'pointer', display: 'flex', justifyContent: 'center' }}>
+      
+      <Backdrop
+        sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+        open={logoffOperation}
+      >  
+        <CircularProgress color="inherit" />
+      </Backdrop>
 
-      <>
-        {currentUrl == '/login/' 
-          ?
-          <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
-            未ログイン
-          </Typography>
-          :
-          // <>ログインしてください<LoginRoundedIcon/></>
-          <><LogoutRoundedIcon/></>
-        }
-      </> 
-    </>
+      {(apiResIsLoggedIn && apiResData) ? 
+        <>
+          <Box sx={{ pt: '1px' }}>
+            {apiResData?.name}
+          </Box>
+          <Box sx={{ ml: 0.5}} onClick={handleSignOut}>
+            <LoginRoundedIcon/>
+          </Box>
+        </>
+        :
+        <>
+          <Box sx={{ pt: '1px' }}>
+            ゲスト
+          </Box>
+          <Box sx={{ ml: 0.5}}>
+            <Link href={`/login`} passHref >
+              <LogoutRoundedIcon/>
+            </Link>
+          </Box>
+        </>
+      }
+    </Box>
   );
 }
