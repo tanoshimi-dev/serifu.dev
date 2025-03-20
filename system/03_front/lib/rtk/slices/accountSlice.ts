@@ -295,6 +295,61 @@ export const getUser = createAsyncThunk("account/user", async () => {
 });
 
 
+export const emailResend = createAsyncThunk("account/emailResend", async () => {
+
+  try {
+    const sanctumResponse = await fetch(`${apiUrl}sanctum/csrf-cookie`, {
+      method: 'GET',
+      credentials: 'include',
+      cache: 'no-store',
+    });
+
+    if (!sanctumResponse.ok) {
+      //console.error('💀　HTTP error1', sanctumResponse.status);
+      return;
+    }
+
+    //let xsrfToken = document.cookie.split('; ').find(row => row.startsWith("XSRF-TOKEN"));
+    let xsrfToken = document.cookie.split('; ').find(row => row.startsWith(process.env.NEXT_PUBLIC_XSRF_TOKEN ?? ''));
+
+    if (xsrfToken) {
+        xsrfToken = xsrfToken.split('=')[1]
+    }
+
+    
+    const response = await fetch(`${apiUrl}email/verification-notification`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        //'X-Requested-With': 'XMLHttpRequest',
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken ?? ''),
+      },
+      credentials: 'include',
+
+    });
+
+
+    console.log('★API★ emailResend response', response);
+
+
+    if (!response.ok) {
+      return;
+    }
+
+    //console.log('★API★ login response', response)
+    const data = await response.json(); // Extract JSON data from the response
+    //console.log('★API★ login ', data);
+    return data;
+
+  } catch (error) {
+    console.error('★API★ login error', error);
+    return error;
+  }
+
+
+});
+
 const accountSlice = createSlice({
     name: 'accountSlice',
     initialState: initialState,
@@ -393,6 +448,17 @@ const accountSlice = createSlice({
         }
       });
       builder.addCase(getUser.rejected, (state, action) => {
+        state.fetchStatus = 'failed'
+      });
+
+      // emailResend
+      builder.addCase(emailResend.pending, (state, action) => {
+        state.fetchStatus = 'pending'
+      });
+      builder.addCase(emailResend.fulfilled, (state, action) => {
+        state.fetchStatus = 'success'
+      });     
+      builder.addCase(emailResend.rejected, (state, action) => {
         state.fetchStatus = 'failed'
       });
 

@@ -5,7 +5,7 @@ import { AppDispatch } from '@/lib/rtk/store';
 import { 
   login, fetchStatus, user, logout, register as userRegister,
   getUser, isLoggedIn, 
-  emailVerify
+  emailVerify, emailResend
 } from '@/lib/rtk/slices/accountSlice';
 import { ApiArgsUserEmailVerify, ApiArgsUserLogin, ApiArgsUserRegister } from '@/lib/types/api_args';
 
@@ -55,23 +55,17 @@ const SmallRadio = styled(Radio)(({ theme }) => ({
 }));
 
 
-export default function AccountRegister() {
+export default function EmailResend() {
 
   const dispatch: AppDispatch = useDispatch();
   //const { login, logout } = useAuth();
   const router = useRouter();
 
-  const handleUserRegister = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleEmailSend = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    console.log('handleUserRegister');
-
-    const data = new FormData(event.currentTarget);
-    const name   = data.get('name');
-    const email   = data.get('email');
-    const password = data.get('password');
-
-    dispatch(userRegister({name, email, password} as ApiArgsUserRegister));
+    console.log('handleEmailSend');
+    dispatch(emailResend());
 
   };
 
@@ -120,7 +114,9 @@ export default function AccountRegister() {
           <Button
             sx={{ minWidth: '320px' }}
             variant="contained" color="primary"
-            type='submit'>
+            type='button'
+            onClick={handleEmailSend}
+          >
             再送信
           </Button>
         </Box>
