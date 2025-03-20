@@ -258,89 +258,6 @@ export const register = createAsyncThunk("account/register", async (params: ApiA
 
 });
 
-export const rememberMeLogin = createAsyncThunk("account/remember-me-login", async () => {
-
-  //console.log('★API★ login url', params);
-
-  try {
-    const sanctumResponse = await fetch(`${apiUrl}sanctum/csrf-cookie`, {
-      method: 'GET',
-      credentials: 'include',
-      cache: 'no-store',
-    });
-
-    if (!sanctumResponse.ok) {
-      //console.error('💀　HTTP error1', sanctumResponse.status);
-      return;
-    }
-
-    //let xsrfToken = document.cookie.split('; ').find(row => row.startsWith("XSRF-TOKEN"));
-    let xsrfToken = document.cookie.split('; ').find(row => row.startsWith(process.env.NEXT_PUBLIC_XSRF_TOKEN ?? ''));
-
-    if (xsrfToken) {
-        xsrfToken = xsrfToken.split('=')[1]
-    }
-
-    const response = await fetch(`${apiUrl}api/remember-me-login`, {
-      method: 'POST',
-      cache: 'no-store',
-      headers: {
-          'Content-Type': 'application/json',
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken ?? ''),
-          'Accept': 'application/json'
-      },
-
-    });
-
-    if (!response.ok) {
-      return;
-    }
-
-    //console.log('★API★ login response', response)
-    const data = await response.json(); // Extract JSON data from the response
-    //console.log('★API★ login ', data);
-    return data;
-
-  } catch (error) {
-    //console.error('★API★ login error', error);
-    //return error;
-  }
-
-
-});
-
-
-// export const getAuthUser = createAsyncThunk("account/authuser", async () => {
-
-//   try {
-//     const token = localStorage.getItem(tokenKey);
-
-//     console.log('★API★ getAuthUser token', token);
-
-//     const response = await fetch(`${apiUrl}api/get-user`, {
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         //'Authorization': `Bearer ${localStorage.getItem('token')}`
-//         //'Accept': 'application/json',
-//         'Authorization': `Bearer ${token}`,
-//       }
-//     });
-
-//     if (!response.ok) {
-//       return;
-//     }
-
-//     const data = await response.json(); // Extract JSON data from the response
-//     return data;
-
-//   } catch (error) {
-//   }
-
-
-// });
-
-
 export const getUser = createAsyncThunk("account/user", async () => {
 
   try {
@@ -374,7 +291,6 @@ export const getUser = createAsyncThunk("account/user", async () => {
   } catch (error) {
     console.error('★API★ getUser error', error);
   }
-
 
 });
 
@@ -449,22 +365,6 @@ const accountSlice = createSlice({
         state.fetchStatus = 'failed'
       });      
 
-      // rememberMeLogin
-      builder.addCase(rememberMeLogin.pending, (state, action) => {
-        state.fetchStatus = 'pending'
-        state.user = {} as User
-      });
-      builder.addCase(rememberMeLogin.fulfilled, (state, action) => {
-        state.fetchStatus = 'success'
-        console.log('rememberMeLogin.fulfilled★ action.payload', action.payload)
-
-        if(action.payload && action.payload.data) {
-          state.user = action.payload.data
-        }
-      });
-      builder.addCase(rememberMeLogin.rejected, (state, action) => {
-        state.fetchStatus = 'failed'
-      });
 
       // logout
       builder.addCase(logout.pending, (state, action) => {
@@ -478,22 +378,6 @@ const accountSlice = createSlice({
         state.fetchStatus = 'failed'
       });
 
-      // getAuthUser
-      // builder.addCase(getAuthUser.pending, (state, action) => {
-      //   state.fetchStatus = 'pending'
-      //   state.user = {} as User
-      // });
-      // builder.addCase(getAuthUser.fulfilled, (state, action) => {
-      //   state.fetchStatus = 'success'
-      //   console.log('getAuthUser.fulfilled★ action.payload', action.payload)
-
-      //   if(action.payload && action.payload.data) {
-      //     state.user = action.payload.data
-      //   }
-      // });
-      // builder.addCase(getAuthUser.rejected, (state, action) => {
-      //   state.fetchStatus = 'failed'
-      // });
 
       // gethUser
       builder.addCase(getUser.pending, (state, action) => {

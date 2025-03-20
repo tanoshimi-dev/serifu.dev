@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from '@/lib/rtk/store';
 import { 
   login, fetchStatus, user, logout, register as userRegister,
-  rememberMeLogin, getUser, isLoggedIn, 
+  getUser, isLoggedIn, 
   emailVerify
 } from '@/lib/rtk/slices/accountSlice';
 import { ApiArgsUserEmailVerify, ApiArgsUserLogin, ApiArgsUserRegister } from '@/lib/types/api_args';
@@ -105,11 +105,11 @@ export default function AccountRegister() {
   return (
     <Box sx={{ px: 2 }} >
       {/* プロフィール */}
-      <form className="min-h-96 " onSubmit={handleUserRegister}>
+      <form className="min-h-96 " >
 
         <Box sx={{ display: 'flex', alignItems: 'start', my: 3 }}>
           <Typography variant="h1" sx={{ color: 'text.primary', fontWeight: 600, fontSize: '1rem' }}>
-            Email確認
+            Eメール確認
           </Typography>
         </Box>
 
@@ -121,18 +121,8 @@ export default function AccountRegister() {
             sx={{ minWidth: '320px' }}
             variant="contained" color="primary"
             type='submit'>
-            登録
+            再送信
           </Button>
-        </Box>
-
-        <Box sx={{ mt: 1, textAlign: 'center' }}>
-          <Link href={`/login/`} passHref >
-            <Button
-              sx={{ minWidth: '320px' }}
-              variant="outlined" color="primary">
-              キャンセル
-            </Button>
-          </Link>
         </Box>
 
     </form>    
