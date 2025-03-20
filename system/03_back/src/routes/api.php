@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\BrandsController;
 use App\Http\Controllers\UserAuthController;
 
 use App\Http\Controllers\Api\MaintenanceItemsController;
+use App\Http\Controllers\Api\SerifuUseController;
 
 
 use App\Http\Controllers\Api\MasterDataController;
@@ -37,6 +38,12 @@ use App\Http\Controllers\Api\TemporaryListController;
 // Route::middleware('verified')->group(function () {
 //     Route::get('/user', [UserAuthController::class, 'getUser'])->middleware('auth:sanctum');
 // });
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/serifu/genres', [SerifuUseController::class, 'getGenres']);
+});
+
+//Route::get('/serifu/genres', [SerifuUseController::class, 'getGenres'])->middleware('auth:sanctum');
 
 Route::get('/user', [UserAuthController::class, 'getUser'])->middleware('auth:sanctum');
 

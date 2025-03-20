@@ -1,7 +1,21 @@
 'use client'
-import React, { useState, useEffect, useCallback, use, Suspense } from "react";
 
-import { useRouter, useSearchParams } from 'next/navigation'
+import React, { createContext, useContext, useState, useEffect, Suspense } from 'react';
+
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from '@/lib/rtk/store';
+
+import { 
+  fetchStatus as fetchUserStatus, user
+} from '@/lib/rtk/slices/accountSlice';
+
+import { 
+  fetchGenresStatus,  genres, userVerified, 
+  getGenres
+} from '@/lib/rtk/slices/serifuUseSlice';
+
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+
 
 import Image from "next/image";
 import styles from "./page.module.css";
@@ -11,12 +25,26 @@ import Header from '../components/Header';
 import TemplateFrame from './TemplateFrame';
 
 export default function Home() {
+  
+  const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
-  // useEffect(() => {
-  //   // Redirect to the /products page
-  //   router.push("/home");
-  // }, [router]);
+  
+  const apiResFetchUserStatus = useSelector(fetchUserStatus);
+  const apiResUserData = useSelector(user);
 
+  const apiResFetchGenresStatus = useSelector(fetchGenresStatus);
+  const apiResGenresData = useSelector(genres);
+  const apiResUserVerified = useSelector(userVerified);
+
+  useEffect(() => {
+    console.log('ジャンル -----------------------')    
+    dispatch(getGenres());
+    
+  }, []);
+
+  useEffect(() => {
+
+  }, [apiResFetchUserStatus, apiResFetchGenresStatus]);
 
   return (
     <Suspense>
@@ -36,35 +64,24 @@ export default function Home() {
           <Box sx={{ mb: 1 }}>
             <Box sx={{ textAlign: 'center' }}>
               <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600, fontSize: '1rem' }}>
-                山岡 士郎 さん
+                { (apiResUserData && apiResUserData?.name)  &&
+                  apiResUserData?.name + ` さん`
+                }
               </Typography>
             </Box>
-            <Box sx={{ mt: 2, textAlign: 'center' }}>
-              <Typography>
-              次回の検診予定日は以下の通りです。
+            
+            <Box sx={{ mt:2, textAlign: 'center' }}>
+            { (apiResFetchGenresStatus && !apiResUserVerified)  &&
+              <Typography variant="caption" sx={{ color: 'text.primary', fontSize: '1rem' }}>
+                メールアドレスが未検証です
               </Typography>
+            }
             </Box>
+
           </Box>
-          <Box sx={{ mt: 2, textAlign: 'center' }}>
+          {/* <Box sx={{ mt: 2, textAlign: 'center' }}>
             <Box>東京都新宿区 新宿健診プラザ</Box>
             <Box>2025/02/18　09:45 - 10:00</Box>
-          </Box>
-
-          {/* <Box sx={{ mb: 2 }}>
-            <Button
-              sx={{ minWidth: '360px' }}
-              variant="outlined" color="primary" onClick={() => router.push("/reservation")}>
-              予約/変更
-            </Button>
-
-          </Box>
-
-          <Box sx={{ mb: 2}}>
-            <Button
-              sx={{ minWidth: '360px' }}
-              variant="outlined" color="primary" onClick={() => router.push("/customer/histories")}>
-              予約の確認/キャンセル
-            </Button>
           </Box> */}
 
 

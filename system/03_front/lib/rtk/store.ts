@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit"
-import maintenanceItemsSlice from "@/lib/rtk/slices/maintenanceItemsSlice"
 import accountSlice from "@/lib/rtk/slices/accountSlice"
+import serifuUseSlice from "@/lib/rtk/slices/serifuUseSlice"
 
 export const store = configureStore({
     reducer: {
-        maintenanceItems: maintenanceItemsSlice,
         account:          accountSlice,
+        serifuUse:        serifuUseSlice,
     }
 })
 
