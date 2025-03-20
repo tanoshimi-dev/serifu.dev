@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from '@/lib/rtk/store';
 import { 
   login as accountLogin, fetchStatus, user, isLoggedIn, logout as accountLogout,
-  rememberMeLogin, getAuthUser, getUser
+  rememberMeLogin, getUser
 } from '@/lib/rtk/slices/accountSlice';
 
 import Link from 'next/link'

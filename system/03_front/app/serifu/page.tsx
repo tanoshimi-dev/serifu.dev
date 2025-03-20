@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from '@/lib/rtk/store';
 import { 
   login, fetchStatus, user, logout, register as userRegister,
-  rememberMeLogin, getAuthUser, getUser, isLoggedIn, 
+  rememberMeLogin, getUser, isLoggedIn, 
   emailVerify, emailVerified
 } from '@/lib/rtk/slices/accountSlice';
 
@@ -28,7 +28,7 @@ import Stack from '@mui/material/Stack';
 import Header from '../../components/Header';
 import TemplateFrame from '../TemplateFrame';
 
-import Serifu from './Serifu';
+import SerifuForm from './SerifuForm';
 
 import { Button, Modal, Typography } from '@mui/material';
 
@@ -82,7 +82,7 @@ export default function Dashboard() {
             }}
           >
             {/* <MainGrid /> */}
-            <Serifu/>
+            <SerifuForm/>
           
           </Stack>
         </Box>

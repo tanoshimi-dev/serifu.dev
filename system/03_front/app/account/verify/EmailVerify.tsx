@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from '@/lib/rtk/store';
 import { 
   login, fetchStatus, user, logout, register as userRegister,
-  rememberMeLogin, getAuthUser, getUser, isLoggedIn, 
+  rememberMeLogin, getUser, isLoggedIn, 
   emailVerify, emailVerified
 } from '@/lib/rtk/slices/accountSlice';
 import { ApiArgsUserEmailVerify, ApiArgsUserLogin, ApiArgsUserRegister } from '@/lib/types/api_args';
