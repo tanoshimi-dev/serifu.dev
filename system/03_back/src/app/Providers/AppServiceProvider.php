@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Services\MailService;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 use Illuminate\Notifications\Messages\MailMessage;
 
@@ -52,12 +53,28 @@ class AppServiceProvider extends AuthServiceProvider
                 ->to($notifiable->email)
                 // テキストを選択、ビューと変数を指定できる
                 ->text(
-                    'email.email_verify_mail', [
+                    'email.email_verify', [
                         'email' => $notifiable->email,
                         'url' => $url
                     ]
                 );
         });
+
+        // メールアドレス確認メールを変更
+        ResetPassword::toMailUsing(function ($notifiable, $token) {
+            return (new TextMail)
+                ->subject('パスワードリセット')
+                ->from('dummy2@d.jp')
+                ->to($notifiable->email)
+                // テキストを選択、ビューと変数を指定できる
+                ->text(
+                    'email.reset_password', [
+                        'email' => $notifiable->getEmailForPasswordReset(),
+                        'token' => $token
+                    ]
+                );
+
+        });        
 
     }
 }

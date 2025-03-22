@@ -4,7 +4,7 @@ import type { RootState  } from '../store'
 import { User } from '@/lib/types/user';
 import { 
   ApiArgsUserLogin, ApiArgsUserEmailVerify, ApiArgsUserRegister,
-  ApiArgsAccount, ApiArgsCustomerUpsert } from '@/lib/types/api_args';
+  ApiArgsAccount, ApiArgsCustomerUpsert, ApiArgsPasswordReset } from '@/lib/types/api_args';
 
 const url = process.env.NEXT_PUBLIC_API_URL??'';
 const suffix = process.env.NEXT_PUBLIC_API_URL_SUFFIX??'';
@@ -350,6 +350,46 @@ export const emailResend = createAsyncThunk("account/emailResend", async () => {
 
 });
 
+export const sendResetLink = createAsyncThunk("account/resetLinkSend", async (params: ApiArgsPasswordReset) => {
+
+  try {
+    
+    const email = params.email;
+
+    const response = await fetch(`${apiUrl}forgot-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        email:   email,
+      }),
+    });
+
+
+    console.log('★API★ resetLinkSend response', response);
+
+
+    if (!response.ok) {
+      return;
+    }
+
+    //console.log('★API★ login response', response)
+    const data = await response.json(); // Extract JSON data from the response
+    //console.log('★API★ login ', data);
+    return data;
+
+  } catch (error) {
+    console.error('★API★ login error', error);
+    return error;
+  }
+
+
+});
+
+
 const accountSlice = createSlice({
     name: 'accountSlice',
     initialState: initialState,
@@ -459,6 +499,17 @@ const accountSlice = createSlice({
         state.fetchStatus = 'success'
       });     
       builder.addCase(emailResend.rejected, (state, action) => {
+        state.fetchStatus = 'failed'
+      });
+
+      // sendResetLink
+      builder.addCase(sendResetLink.pending, (state, action) => {
+        state.fetchStatus = 'pending'
+      });
+      builder.addCase(sendResetLink.fulfilled, (state, action) => {
+        state.fetchStatus = 'success'
+      });     
+      builder.addCase(sendResetLink.rejected, (state, action) => {
         state.fetchStatus = 'failed'
       });
 

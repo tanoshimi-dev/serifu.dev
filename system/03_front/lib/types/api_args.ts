@@ -12,6 +12,11 @@ export interface ApiArgsUserEmailVerify {
   url?:    string | null;
 }
 
+export interface ApiArgsPasswordReset {
+  email?:    string | null;
+}
+
+
 export interface ApiArgsUserRegister{
   name?:     string | null;
   email?:    string | null;

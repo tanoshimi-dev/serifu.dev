@@ -21,6 +21,8 @@ class VerifyCsrfToken extends Middleware
         // 'verify-email/*',
         // 'email/verification-notification',
         // 'api/*',
+        '/forgot-password',
+        '/reset-password',
     ];
 
     protected function newCookie($request, $config)
