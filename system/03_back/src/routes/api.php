@@ -41,6 +41,8 @@ use App\Http\Controllers\Api\TemporaryListController;
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/serifu/genres', [SerifuUseController::class, 'getGenres']);
+    Route::get('/serifu/titles', [SerifuUseController::class, 'getTitles']);
+    Route::get('/serifu/serifus', [SerifuUseController::class, 'getSerifus']);
 });
 
 //Route::get('/serifu/genres', [SerifuUseController::class, 'getGenres'])->middleware('auth:sanctum');

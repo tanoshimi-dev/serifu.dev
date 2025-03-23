@@ -37,5 +37,26 @@ class SerifuUseController extends Controller
         ]);
     }
 
+    public function getTitles(Request $request)
+    {
+        $titles = DB::table('titles')->get();
+        return new JsonResponse([
+            'titles' => $titles,
+        ]);
+    }
+
+    public function getSerifus(Request $request)
+    {
+        $title_id = $request->input('title');
+        if($title_id){
+            $serifus = DB::table('serifus')->where('title_id', $title_id)->get();
+        } else {
+            $serifus = DB::table('serifus')->get();
+        }
+
+        return new JsonResponse([
+            'serifus' => $serifus,
+        ]);
+    }
 
 }

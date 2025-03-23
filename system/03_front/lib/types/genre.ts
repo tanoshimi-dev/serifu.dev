@@ -1,4 +1,4 @@
 export interface Genre {
-  id?:     string | null;
-  genru?:  string | null;
+  id?:        string | null;
+  title_id?:  string | null;
 };

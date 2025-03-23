@@ -1,4 +1,14 @@
-import * as React from 'react';
+"use client";
+
+import React, { useState, useEffect, useCallback, use } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from '@/lib/rtk/store';
+import { 
+  getGenres, fetchGenresStatus, genres, 
+  getTitles, fetchTitlesStatus, titles, 
+  getSerifus, fetchSerifusStatus, serifus, 
+} from '@/lib/rtk/slices/serifuUseSlice';
+
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -34,63 +44,12 @@ import { Controller, useForm, SubmitHandler, set } from "react-hook-form"
 
 import Select from 'react-select'
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '1px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
 
 const SmallRadio = styled(Radio)(({ theme }) => ({
   '& .MuiSvgIcon-root': {
     fontSize: 20, // Adjust the size as needed
   },
 }));
-
-const SyledCard = styled(Card)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  padding: 0,
-  height: '100%',
-  backgroundColor: theme.palette.background.paper,
-  '&:hover': {
-    backgroundColor: 'transparent',
-    cursor: 'pointer',
-  },
-  '&:focus-visible': {
-    outline: '3px solid',
-    outlineColor: 'hsla(210, 98%, 48%, 0.5)',
-    outlineOffset: '2px',
-  },
-}));
-
-const SyledCardContent = styled(CardContent)({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 4,
-  padding: 16,
-  flexGrow: 1,
-  '&:last-child': {
-    paddingBottom: 16,
-  },
-});
-
-const StyledTypography = styled(Typography)({
-  display: '-webkit-box',
-  WebkitBoxOrient: 'vertical',
-  WebkitLineClamp: 2,
-  // overflow: 'hidden',
-  //textOverflow: 'ellipsis',
-  overflow: 'auto',
-  minHeight: '100%',
-});
-
 
 
 export default function Form() {
@@ -106,13 +65,6 @@ export default function Form() {
     'ポケモン',
   ]
 
-  const [options, setOptions] = React.useState(defaultOptions);
-
-  React.useEffect(() => {
-    setOptions(defaultOptions)
-    console.log('option:', options)
-  }
-  , []);
 
   const defaultValues = {
     sex: '0',
@@ -123,6 +75,8 @@ export default function Form() {
       { label: '葬送のフリーレン', value: '2' },
       { label: 'ポケモン', value: '3' },
     ],
+    title: '',
+    serifu: '',
     dummy_contract_date: new Date('1980-01-01'),
     
   };
@@ -140,7 +94,78 @@ export default function Form() {
     mode: 'onChange',
     //resolver: zodResolver(userSchema)
   });
+  
+  const dispatch: AppDispatch = useDispatch();
 
+  const apiResFetchTitlesStatus  = useSelector(fetchTitlesStatus);
+  const apiResTitles    = useSelector(titles);
+  const apiResFetchSerifusStatus  = useSelector(fetchSerifusStatus);
+  const apiResSerifus    = useSelector(serifus);
+
+  console.log('apiResFetchTitlesStatus=>', apiResFetchTitlesStatus)
+  console.log('apiResTitles=>', apiResTitles)
+  console.log('apiResFetchSerifusStatus=>', apiResFetchSerifusStatus)
+  console.log('apiResSerifus=>', apiResSerifus)
+
+  interface OptionType {
+    value: string;
+    label: string;
+  }
+  const [titleOptions, setTitleOptions] = React.useState<OptionType[] | null>(null);
+  const [serifuOptions, setSerifuOptions] = React.useState<OptionType[] | null>(null);
+  const [serifuDetail, setSerifuDetail] = React.useState<string | null>(null);
+
+
+  useEffect(() => {
+    dispatch(getTitles(''));
+  }, []);
+
+  useEffect(() => {
+    if (apiResFetchTitlesStatus && apiResTitles.length > 0) {
+      const formattedOptions: OptionType[] = apiResTitles
+        .filter((row) => row.id && row.name) // Ensure id and name are not null or undefined
+        .map((row) => ({
+          value: row.id as string, // Type assertion to string
+          label: row.name as string, // Type assertion to string
+        }));
+
+      setTitleOptions(formattedOptions)
+    }
+    
+    if (apiResFetchSerifusStatus && apiResSerifus.length > 0) {
+      const formattedOptions: OptionType[] = apiResSerifus
+        .filter((row) => row.id && row.serifu) // Ensure id and name are not null or undefined
+        .map((row) => ({
+          value: row.id as string, // Type assertion to string
+          label: row.serifu as string, // Type assertion to string
+        }));
+
+      setSerifuOptions(formattedOptions)
+    }
+
+  }, [dispatch, apiResFetchTitlesStatus, apiResTitles, apiResFetchSerifusStatus, apiResSerifus]);
+
+
+  const handleTitleChange = (value: string | undefined) => {
+    console.log('selectedOption:', value)
+    if (value) {
+      setValue('title', value);
+    }
+    dispatch(getSerifus(value ?? ''));
+  }
+
+  const handleSerifuChange = (value: string | undefined) => {
+    console.log('selectedOption:', value)
+    if (value) {
+      setValue('serifu', value);
+
+      const serifuDetail = apiResSerifus.find((row) => row.id === value)?.detail;
+      console.log('Detail for id:', value, 'is:', serifuDetail);
+      setSerifuDetail(serifuDetail ?? '');
+    }
+    //dispatch(getSerifus(value ?? ''));
+  }
+  
 
   return (
     <Box sx={{ px: 2 }} >
@@ -168,8 +193,7 @@ export default function Form() {
                     >
                       <FormControlLabel {...field} value="0" 
                         control={
-                          <SmallRadio sx={{ pt: 1  }} />
-  } 
+                          <SmallRadio sx={{ pt: 1  }} />}
                         label="マンガ" 
                         sx={{ fontSize: 'small', fontColor: 'hsl(220, 20%, 35%)' }}
                       />
@@ -195,60 +219,47 @@ export default function Form() {
         <Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', my: 0.5 }}>
             <Box sx={{ minWidth: 120 }}>
-              <FormLabel htmlFor="kubun" sx={{ fontWeight: 600 }}>
+              <FormLabel htmlFor="title" sx={{ fontWeight: 600 }}>
               作品名
               </FormLabel>
             </Box>
             <Box>
               
-
               <Controller
-                name="kubun"
+                name="title"
                 control={control}
                 render={({ field }) => (
-                  <Select {...field}
-                    options={options}
-                  >
-                    {/* {(getValues('kubuns')) && (getValues('kubuns')).map((item, index) => (
-                      <MenuItem
-                        key={index}
-                        value={item.value}
-                      >
-                        {item.label}
-                      </MenuItem>
-                    ))} */}
-                  </Select>
+                  <Select<OptionType>
+                    {...field}
+                    options={titleOptions || []}
+                    value={titleOptions?.find(option => option.value === field.value) || null}
+                    onChange={(selectedOption) => handleTitleChange(selectedOption?.value)}
+                  />
                 )}
               />
 
             </Box>
             
           </Box>
-
+          
           <Box sx={{ display: 'flex', flexDirection: 'column', my: 0.5 }}>
             <Box sx={{ minWidth: 120 }}>
-              <FormLabel htmlFor="kubun" sx={{ fontWeight: 600 }}>
+              <FormLabel htmlFor="serifu" sx={{ fontWeight: 600 }}>
               セリフ
               </FormLabel>
             </Box>
             <Box >
               
               <Controller
-                name="kubun"
+                name="serifu"
                 control={control}
                 render={({ field }) => (
-                  <Select {...field}
-                    options={options}
-                  >
-                    {/* {(getValues('kubuns')) && (getValues('kubuns')).map((item, index) => (
-                      <MenuItem
-                        key={index}
-                        value={item.value}
-                      >
-                        {item.label}
-                      </MenuItem>
-                    ))} */}
-                  </Select>
+                  <Select<OptionType>
+                    {...field}
+                    options={serifuOptions || []}
+                    value={serifuOptions?.find(option => option.value === field.value) || null}
+                    onChange={(selectedOption) => handleSerifuChange(selectedOption?.value)}
+                  />
                 )}
               />
 
@@ -256,14 +267,17 @@ export default function Form() {
             
           </Box>
 
-          <Box sx={{ display: 'flex', flexDirection: 'column', my: 0.5, py: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', my: 0.5, py: 1, maxWidth: '375px' }}>
             <Box sx={{ height: '100%', p:1, mx: 0.25, borderLeftStyle: 'solid ', borderBlockColor: 'hsl(219, 53.10%, 44.30%)' }}>
               <Typography
                 variant="caption"
                 color="text.secondary"
                 gutterBottom
+                sx={{
+                  whiteSpace: 'pre-line', // Preserve line breaks
+                }}
               >
-                士郎が素朴な家庭料理の味に感動した時に言ったセリフ。高級料理よりも、料理に込められた愛情や心遣いこそが本質だと気付く重要な場面で、作品のテーマを象徴する言葉です。
+                {serifuDetail}
               </Typography>
             </Box>
             
