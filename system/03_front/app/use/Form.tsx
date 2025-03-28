@@ -141,6 +141,8 @@ export default function Form() {
         }));
 
       setSerifuOptions(formattedOptions)
+    } else {
+      setSerifuOptions(null);
     }
 
   }, [dispatch, apiResFetchTitlesStatus, apiResTitles, apiResFetchSerifusStatus, apiResSerifus]);
@@ -148,6 +150,8 @@ export default function Form() {
 
   const handleTitleChange = (value: string | undefined) => {
     console.log('selectedOption:', value)
+    setSerifuOptions(null);
+    setSerifuDetail(null);
     if (value) {
       setValue('title', value);
     }
@@ -267,7 +271,7 @@ export default function Form() {
             
           </Box>
 
-          <Box sx={{ display: 'flex', flexDirection: 'column', my: 0.5, py: 1, maxWidth: '375px' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', my: 0.5, py: 1, maxWidth: '360px' }}>
             <Box sx={{ height: '100%', p:1, mx: 0.25, borderLeftStyle: 'solid ', borderBlockColor: 'hsl(219, 53.10%, 44.30%)' }}>
               <Typography
                 variant="caption"
@@ -299,7 +303,7 @@ export default function Form() {
               maxRows={4}
               variant="filled"
               sx={{
-                width: '375px',
+                width: '360px',
                 '& .MuiFilledInput-root': {
                   paddingTop: '0.5rem',
                   backgroundColor: 'hsl(0, 0%, 99%)',

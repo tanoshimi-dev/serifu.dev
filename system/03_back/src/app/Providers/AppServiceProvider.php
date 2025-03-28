@@ -48,8 +48,8 @@ class AppServiceProvider extends AuthServiceProvider
         // メールアドレス確認メールを変更
         VerifyEmail::toMailUsing(function ($notifiable, $url) {
             return (new TextMail)
-                ->subject('メールタイトル')
-                ->from('dummy@d.jp')
+                ->subject('ユーザー登録を完了させてください')
+                ->from('info@serifu.dev')
                 ->to($notifiable->email)
                 // テキストを選択、ビューと変数を指定できる
                 ->text(
@@ -64,7 +64,7 @@ class AppServiceProvider extends AuthServiceProvider
         ResetPassword::toMailUsing(function ($notifiable, $token) {
             return (new TextMail)
                 ->subject('パスワードリセット')
-                ->from('dummy2@d.jp')
+                ->from('info@serifu.dev')
                 ->to($notifiable->email)
                 // テキストを選択、ビューと変数を指定できる
                 ->text(

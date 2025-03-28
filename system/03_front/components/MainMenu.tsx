@@ -29,7 +29,7 @@ export default function MainMenu({ currentUrl, currentUser }: Props): React.JSX.
 
   return (
     <Box sx={{ ml:2, display: 'flex', alignItems: 'center', gap: 1,  height: '40px' }}>
-      <Link href={`/`} passHref>
+      {/* <Link href={`/`} passHref>
         {currentUrl == '/' 
           ?
           <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
@@ -38,16 +38,16 @@ export default function MainMenu({ currentUrl, currentUser }: Props): React.JSX.
           :
           <>トップ</>
         }
-      </Link>
+      </Link> */}
       
       <Link href={`/serifu`} passHref >
         { (currentUrl && currentUrl.startsWith('/serifu/'))
           ?
           <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
-            みんなが使ったセリフ
+            みんなのセリフ
           </Typography>
           :
-          <>みんなが使ったセリフ</>
+          <>みんなのセリフ</>
         }
       </Link>
       {currentUser?.id &&

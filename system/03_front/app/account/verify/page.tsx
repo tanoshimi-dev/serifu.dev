@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Suspense, useEffect } from "react";
 import {
   PaletteMode,
   createTheme,
@@ -40,6 +41,7 @@ export default function Dashboard() {
   const handleClose = () => setOpen(false);
 
   return (
+    <Suspense>
     <TemplateFrame>
       <CssBaseline enableColorScheme />
       <Header />
@@ -82,5 +84,6 @@ export default function Dashboard() {
       </Box>
 
     </TemplateFrame>
+    </Suspense>
   );
 }
