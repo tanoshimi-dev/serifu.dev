@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\CustomersController;
 
 use App\Http\Controllers\Api\TemporaryListController;
+use App\Http\Controllers\Api\HelloController;
 
 
 /*
@@ -29,6 +30,9 @@ use App\Http\Controllers\Api\TemporaryListController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/hello', [HelloController::class, 'getGenres']);
+// Route::get('/hello', [HelloController::class, 'getGenres'])->middleware('auth:sanctum');
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
