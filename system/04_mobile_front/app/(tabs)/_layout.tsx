@@ -7,11 +7,20 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import LogoutScreen from './logout';
+
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+// const Tab = createBottomTabNavigator();
+
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  
 
   return (
+
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
@@ -40,6 +49,22 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="login"
+        options={{
+          title: 'Login',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="lock.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+          name="logout"
+          options={{
+            title: 'Logout',
+            tabBarIcon: ({ color }) => <IconSymbol size={28} name="arrow.uturn.backward" color={color} />,
+          }}
+      />
+
     </Tabs>
+
   );
 }

@@ -5,12 +5,15 @@ import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen() {
 
   const [data, setData] = useState<string | null>(null); // State to store fetched data
   const [loading, setLoading] = useState(false); // State to manage loading state
-
+  const [dataGetUser, setDataGetUser] = useState<string | null>(null); // State to store fetched data
+  const [loadingGetUser, setLoadingGetUser] = useState(false); // State to manage loading state
+  
   const fetchData = async () => {
     setLoading(true); // Set loading to true while fetching
     try {
@@ -33,6 +36,44 @@ export default function HomeScreen() {
       setLoading(false); // Set loading to false after fetching
     }
   };
+  const fetchDataGetUser = async () => {
+    setLoadingGetUser(true); // Set loading to true while fetching
+
+    try {
+
+      const token = await AsyncStorage.getItem('authToken');
+      if (token) {
+          console.log('Retrieved token:', token);
+      } else {
+          console.log('No token found');
+      }
+
+      // 物理デバイスから（ローカルPC内の）dockerコンテナへのアドレスは？？
+      // PCでifconfigで表示されたeen0のinetアドレス。（PC ゲートウェイ 192.168.0.1）
+      // スマホのゲートウェイアドレス（スマホゲートウェイ 192.168.0.1）
+      // 同じネットワークにないとダメ
+      // const response = await fetch('http://localhost:32011/api/hello'); // Replace with your backend URL
+      const response = await fetch('http://192.168.0.154:32011/api/get-user',{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+      });
+      // Replace with your backend URL
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+      const result = await response.json();
+      console.log('Fetched data:', result);
+      setDataGetUser(result.message); // Assuming the backend returns a "message" field
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setDataGetUser('Error fetching data');
+    } finally {
+      setLoadingGetUser(false); // Set loading to false after fetching
+    }
+  };
 
   return (
     <ParallaxScrollView
@@ -49,11 +90,21 @@ export default function HomeScreen() {
       </ThemedView>
 
       <ThemedView style={styles.stepContainer}>
-        <Button title="Fetch Data" onPress={fetchData} />
+        <Button title="Fetch Data " onPress={fetchData} />
         {loading && <ActivityIndicator size="small" color="#0000ff" />}
         {data && (
           <ThemedText type="default">
             {data}
+          </ThemedText>
+        )}
+      </ThemedView>
+
+      <ThemedView style={styles.stepContainer}>
+        <Button title="Fetch Data get-user" onPress={fetchDataGetUser} />
+        {loadingGetUser && <ActivityIndicator size="small" color="#0000ff" />}
+        {dataGetUser && (
+          <ThemedText type="default">
+            {dataGetUser}
           </ThemedText>
         )}
       </ThemedView>

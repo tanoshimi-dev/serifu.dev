@@ -18,7 +18,7 @@ use App\Http\Controllers\Api\CustomersController;
 
 use App\Http\Controllers\Api\TemporaryListController;
 use App\Http\Controllers\Api\HelloController;
-
+use App\Http\Controllers\Auth\SpAuthenticatedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,17 +31,12 @@ use App\Http\Controllers\Api\HelloController;
 |
 */
 
+// mobile
+Route::post('/sp-login', [SpAuthenticatedController::class, 'login']);
+Route::post('/sp-logout', [SpAuthenticatedController::class, 'logout']);
+
+// web
 Route::get('/hello', [HelloController::class, 'getGenres']);
-// Route::get('/hello', [HelloController::class, 'getGenres'])->middleware('auth:sanctum');
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-// TODO
-// Route::middleware('verified')->group(function () {
-//     Route::get('/user', [UserAuthController::class, 'getUser'])->middleware('auth:sanctum');
-// });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/serifu/genres', [SerifuUseController::class, 'getGenres']);
@@ -54,7 +49,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::get('/user', [UserAuthController::class, 'getUser'])->middleware('auth:sanctum');
 
 
-//work well? witout sunctum middleware
+
 Route::get('someone', function (Request $request) {
     return $request->user();
 });
